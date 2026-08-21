@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import FileTree from "./FileTree";
 import CodePane from "./CodePane";
+import PreviewPane from "./PreviewPane";
 import { useProject } from "@/lib/storage/use-project";
 import { useProjectStore } from "@/lib/state/project-store";
 import { flushAllSaves } from "@/lib/editor/debounce-pipeline";
@@ -54,8 +55,14 @@ function Editor({ projectId }: { projectId: string }) {
           </div>
         )}
       </main>
-      <section className="flex w-1/3 items-center justify-center border-l border-border text-sm text-muted-foreground">
-        preview pane (#6)
+      <section className="w-1/3 border-l border-border">
+        {activeId ? (
+          <PreviewPane chapterId={activeId} />
+        ) : (
+          <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+            no chapter
+          </div>
+        )}
       </section>
     </div>
   );
