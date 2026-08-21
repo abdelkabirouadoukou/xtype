@@ -3,6 +3,7 @@ import FileTree from "./FileTree";
 import CodePane from "./CodePane";
 import PreviewPane from "./PreviewPane";
 import CompileStatusBar from "./CompileStatusBar";
+import ProjectLoadingScreen from "./ProjectLoadingScreen";
 import { useOnlineStatus, useEventListener } from "@thexjs/hooks";
 import { useProject } from "@/lib/storage/use-project";
 import { useProjectStore } from "@/lib/state/project-store";
@@ -10,18 +11,34 @@ import { flushAllSaves } from "@/lib/editor/debounce-pipeline";
 
 export default function EditorIsland() {
   const [projectId, setProjectId] = useState<string | null>(null);
+  const [isNew, setIsNew] = useState(false);
 
   useEffect(() => {
     const parts = window.location.pathname.split("/").filter(Boolean);
-    if (parts[0] === "project" && parts[1]) {
-      setProjectId(decodeURIComponent(parts[1]));
+    const param = parts[0] === "project" && parts[1]
+      ? decodeURIComponent(parts[1])
+      : null;
+    if (!param) return;
+
+    if (param === "new") {
+      setIsNew(true);
+      const freshId = crypto.randomUUID().slice(0, 8);
+      window.history.replaceState(null, "", `/project/${freshId}`);
+      setTimeout(() => {
+        setProjectId(freshId);
+        setIsNew(false);
+      }, 900);
+      return;
     }
+    setProjectId(param);
   }, []);
 
   useEventListener("pagehide", () => void flushAllSaves());
 
   if (!projectId) {
-    return (
+    return isNew ? (
+      <ProjectLoadingScreen />
+    ) : (
       <div className="flex h-full items-center justify-center text-muted-foreground">
         Loading…
       </div>
