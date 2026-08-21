@@ -10,6 +10,7 @@
     "prevercel-build": "bun scripts/build-workers.ts && bun scripts/build-collab.ts && bun scripts/build-docs.ts && bun scripts/build-search-index.ts",
     "build": "x build",
     "start": "x start",
+    "test:e2e": "playwright test",
     "vercel-build": "x build --adapter vercel"
   },
   "dependencies": {
@@ -49,6 +50,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@playwright/test": "1.49.1",
     "@tailwindcss/cli": "^4.3.3",
     "@thexjs/cli": "^1.1.x",
     "@types/bun": "^1.4.0",
