@@ -43,7 +43,30 @@ export function requestCompile() {
     if (c.id !== activeChapterId) files[c.filename] = c.content;
   }
 
+  const undefinedRefs = scanUndefinedRefs(source, files);
+  if (undefinedRefs.length > 0) {
+    console.warn("[xtype] unresolved references:", undefinedRefs);
+  }
+
   generation += 1;
   setCompileState("compiling");
   getWorker().postMessage({ type: "compile", source, files, gen: generation });
+}
+
+export function scanUndefinedRefs(
+  source: string,
+  files: Record<string, string>,
+): string[] {
+  const defined = new Set<string>();
+  const all = [source, ...Object.values(files)].join("\n");
+  for (const m of all.matchAll(/<([a-zA-Z][\w-]*)>/g)) defined.add(m[1]);
+  for (const m of all.matchAll(/#label\(\s*"([^"]+)"\s*\)/g)) defined.add(m[1]);
+  const missing = new Set<string>();
+  for (const m of source.matchAll(/@([a-zA-Z][\w-]*)/g)) {
+    if (!defined.has(m[1])) missing.add(m[1]);
+  }
+  for (const m of source.matchAll(/#ref\(\s*"([^"]+)"\s*\)/g)) {
+    if (!defined.has(m[1])) missing.add(m[1]);
+  }
+  return [...missing];
 }

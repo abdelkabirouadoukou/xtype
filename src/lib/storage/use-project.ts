@@ -52,7 +52,7 @@ export async function createFile(
   parentId: string | null,
   order: number,
 ) {
-  const finalName = name.endsWith(".md") ? name : `${name}.md`;
+  const finalName = /\.(md|bib|typ)$/.test(name) ? name : `${name}.md`;
   await db.nodes.put({
     id: newFileId(projectId),
     projectId,
@@ -85,8 +85,9 @@ export async function createFolder(
 export async function renameNode(id: string, newName: string) {
   const node = await db.nodes.get(id);
   if (!node || !newName.trim()) return;
+  const isTyped = /\.(md|bib|typ)$/.test(newName);
   const name =
-    node.type === "file" && !newName.endsWith(".md") ? `${newName}.md` : newName;
+    node.type === "file" && !isTyped ? `${newName}.md` : newName;
   await db.nodes.update(id, { name, updatedAt: Date.now() });
 }
 
