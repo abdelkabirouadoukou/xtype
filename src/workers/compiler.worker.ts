@@ -64,7 +64,12 @@ self.onmessage = async (e: MessageEvent) => {
     if (gen !== latestGen) return;
     await compiler.addSource("main.typ", source);
     for (const [name, content] of Object.entries(files ?? {})) {
-      await compiler.addSource(name.endsWith(".typ") ? name : `${name}.typ`, content);
+      const target = /\.[a-z]+$/.test(name) ? name : `${name}.typ`;
+      try {
+        await compiler.addSource(target, content);
+      } catch {
+        // non-source assets (e.g. .bib) may be unsupported by addSource
+      }
     }
     const result = await compiler.compile({ format: "pdf" });
     if (gen !== latestGen) return;

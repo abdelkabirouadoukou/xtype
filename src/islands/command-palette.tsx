@@ -65,6 +65,45 @@ export default function CommandPalette() {
         run: () => (window.location.href = "/settings"),
       },
       {
+        id: "eq-numbering",
+        label: "Toggle equation numbering",
+        hint: "math",
+        run: () => {
+          const w = window as unknown as { __xtypeView?: { dispatch: (s: unknown) => void; state: { selection: { main: { from: number } }; doc: { toString: () => string; length: number } } } };
+          const v = w.__xtypeView;
+          if (!v) return;
+          const has = v.state.doc.toString().includes('#set math.equation(numbering');
+          const snippet = has ? "" : '#set math.equation(numbering: "(1)")\n\n';
+          v.dispatch({ changes: { from: 0, to: 0, insert: snippet } });
+        },
+      },
+      {
+        id: "footnote",
+        label: "Insert footnote",
+        hint: "math",
+        run: () => {
+          const w = window as unknown as { __xtypeView?: { dispatch: (s: unknown) => void; state: { selection: { main: { to: number } } }; focus: () => void } };
+          const v = w.__xtypeView;
+          if (!v) return;
+          const at = v.state.selection.main.to;
+          v.dispatch({ changes: { from: at, to: at, insert: "[^note1]" } });
+          v.focus();
+        },
+      },
+      {
+        id: "table",
+        label: "Insert table skeleton",
+        hint: "insert",
+        run: () => {
+          const w = window as unknown as { __xtypeView?: { dispatch: (s: unknown) => void; state: { selection: { main: { to: number } } }; focus: () => void } };
+          const v = w.__xtypeView;
+          if (!v) return;
+          const at = v.state.selection.main.to;
+          v.dispatch({ changes: { from: at, to: at, insert: "\n| A | B |\n|---|---|\n| 1 | 2 |\n" } });
+          v.focus();
+        },
+      },
+      {
         id: "docs",
         label: "Open documentation",
         hint: "nav",

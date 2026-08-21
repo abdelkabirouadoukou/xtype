@@ -69,6 +69,7 @@ export default function CodePane({ chapterId, initialContent }: Props) {
       }),
     });
     viewRef.current = view;
+    (window as unknown as { __xtypeView?: unknown }).__xtypeView = view;
     const onGoto = (e: Event) => {
       const line = (e as CustomEvent<number>).detail;
       const l = view.state.doc.line(Math.min(line + 1, view.state.doc.lines));
