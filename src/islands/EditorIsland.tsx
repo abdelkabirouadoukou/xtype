@@ -57,6 +57,32 @@ function Editor({ projectId }: { projectId: string }) {
     (s) => (activeId ? s.chapters[activeId]?.content : undefined) ?? "",
   );
   const online = useOnlineStatus();
+  const [vimOn, setVimOn] = useState(false);
+  const [splitOn, setSplitOn] = useState(false);
+  const [secondaryId, setSecondaryId] = useState<string | null>(null);
+
+  useEffect(() => {
+    import("@/lib/editor/editor-prefs").then(({ isVimEnabled, isSplitView }) => {
+      setVimOn(isVimEnabled());
+      setSplitOn(isSplitView());
+    });
+    const onVim = () => setVimOn(isVimEnabledSafe());
+    const onSplit = () => setSplitOn(isSplitViewSafe());
+    function isVimEnabledSafe() {
+      try { return localStorage.getItem("xtype:vim-enabled") === "1"; } catch { return false; }
+    }
+    function isSplitViewSafe() {
+      try { return localStorage.getItem("xtype:split-view") === "1"; } catch { return false; }
+    }
+    window.addEventListener("xtype:vim-changed", onVim);
+    window.addEventListener("xtype:split-changed", onSplit);
+    return () => {
+      window.removeEventListener("xtype:vim-changed", onVim);
+      window.removeEventListener("xtype:split-changed", onSplit);
+    };
+  }, []);
+
+  const files = (nodes ?? []).filter((n) => n.type === "file");
 
   return (
     <div className="flex h-full">
@@ -69,11 +95,46 @@ function Editor({ projectId }: { projectId: string }) {
               <span>{projectId}</span>
               <span className="flex items-center gap-4">
                 {!online && <span className="text-yellow-500">offline — edits stay local</span>}
+                <button
+                  onClick={() => import("@/lib/editor/editor-prefs").then(({ setVimEnabled }) => setVimEnabled(!vimOn))}
+                  className={vimOn ? "font-medium text-accent" : "hover:text-foreground"}
+                  title="Vim keybindings"
+                >
+                  vim
+                </button>
+                <button
+                  onClick={() => import("@/lib/editor/editor-prefs").then(({ setSplitView }) => setSplitView(!splitOn))}
+                  className={splitOn ? "font-medium text-accent" : "hover:text-foreground"}
+                  title="Split view"
+                >
+                  split
+                </button>
                 <CompileStatusBar />
                 <SaveBadge />
               </span>
             </header>
-            <CodePane key={activeId} chapterId={activeId} initialContent={content} />
+            <div className="flex min-h-0 flex-1">
+              <div className="min-w-0 flex-1">
+                <CodePane key={`${activeId}-${vimOn}`} chapterId={activeId} initialContent={content} />
+              </div>
+              {splitOn && (
+                <div className="flex min-w-0 flex-1 flex-col border-l border-border">
+                  <select
+                    value={secondaryId ?? ""}
+                    onChange={(e) => setSecondaryId(e.target.value || null)}
+                    className="border-b border-border bg-transparent px-3 py-1.5 text-xs text-muted-foreground outline-none"
+                  >
+                    <option value="">second chapter…</option>
+                    {files.map((f) => (
+                      <option key={f.id} value={f.id}>{f.name}</option>
+                    ))}
+                  </select>
+                  {secondaryId && (
+                    <SplitPane chapterId={secondaryId} vimOn={vimOn} />
+                  )}
+                </div>
+              )}
+            </div>
           </>
         ) : (
           <div className="flex flex-1 items-center justify-center text-muted-foreground">
@@ -107,5 +168,16 @@ function SaveBadge() {
     <span>unsaved: {dirtyCount}</span>
   ) : (
     <span className="text-green-500">saved</span>
+  );
+}
+
+function SplitPane({ chapterId, vimOn }: { chapterId: string; vimOn: boolean }) {
+  const content = useProjectStore(
+    (s) => s.chapters[chapterId]?.content ?? "",
+  );
+  return (
+    <div className="min-h-0 flex-1">
+      <CodePane key={`${chapterId}-${vimOn}`} chapterId={chapterId} initialContent={content} />
+    </div>
   );
 }

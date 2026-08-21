@@ -4,6 +4,8 @@ import { EditorView, keymap } from "@codemirror/view";
 import { basicSetup } from "codemirror";
 import { indentWithTab } from "@codemirror/commands";
 import { searchKeymap, highlightSelectionMatches } from "@codemirror/search";
+import { vim } from "@replit/codemirror-vim";
+import { isVimEnabled } from "@/lib/editor/editor-prefs";
 import { xtypeLanguage } from "@/lib/editor/math-syntax";
 import { mathAutocomplete } from "@/lib/editor/completions/completion-source";
 import { onEditorChange, flushSave } from "@/lib/editor/debounce-pipeline";
@@ -26,6 +28,7 @@ export default function CodePane({ chapterId, initialContent }: Props) {
         doc: initialContent,
         extensions: [
           basicSetup,
+          ...(isVimEnabled() ? [vim()] : []),
           xtypeLanguage,
           mathAutocomplete,
           highlightSelectionMatches(),

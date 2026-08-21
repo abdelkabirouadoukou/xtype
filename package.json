@@ -22,6 +22,7 @@
     "@dnd-kit/core": "^6.3.1",
     "@lezer/highlight": "^1.2.3",
     "@neondatabase/serverless": "^1.1.0",
+    "@replit/codemirror-vim": "^6.4.0",
     "@thexjs/adapter-vercel": "^1.0.9",
     "@thexjs/core": "^1.6.1",
     "@thexjs/env": "^1.1.0",
