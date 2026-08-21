@@ -65,6 +65,22 @@ export default function CommandPalette() {
         run: () => (window.location.href = "/settings"),
       },
       {
+        id: "restore-snapshot",
+        label: "Restore latest snapshot",
+        hint: "reliability",
+        run: () => {
+          const id = useProjectStore.getState().activeChapterId;
+          if (!id) return;
+          void import("@/lib/snapshots").then(async ({ listSnapshots, restoreSnapshot }) => {
+            const snaps = await listSnapshots(id);
+            if (!snaps.length) return alert("No snapshots yet");
+            if (confirm(`Restore snapshot from ${new Date(snaps[0].createdAt).toLocaleString()}?`)) {
+              await restoreSnapshot(id, snaps[0].id);
+            }
+          });
+        },
+      },
+      {
         id: "eq-numbering",
         label: "Toggle equation numbering",
         hint: "math",
