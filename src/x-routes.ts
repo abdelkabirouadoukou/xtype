@@ -8,6 +8,7 @@ export type RouteMap = {
   "/project/:projectId": { projectId: string };
   "/sign-in": Record<string, never>;
   "/sign-up": Record<string, never>;
+  "/api/liveblocks-auth": Record<string, never>;
   "/api/projects/:projectId": { projectId: string };
   "/api/projects/share": Record<string, never>;
   "/api/projects": Record<string, never>;
