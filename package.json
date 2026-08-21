@@ -12,6 +12,7 @@
     "vercel-build": "x build --adapter vercel"
   },
   "dependencies": {
+    "@clerk/backend": "^3.16.10",
     "@codemirror/autocomplete": "^6.20.3",
     "@codemirror/commands": "^6.11.0",
     "@codemirror/language": "^6.12.4",

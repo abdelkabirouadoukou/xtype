@@ -5,6 +5,10 @@ export type RouteMap = {
   "/docs": Record<string, never>;
   "/docs/*": { slug: string };
   "/project/:projectId": { projectId: string };
+  "/sign-in": Record<string, never>;
+  "/sign-up": Record<string, never>;
+  "/api/projects/:projectId": { projectId: string };
+  "/api/projects": Record<string, never>;
 };
 
 export function href<T extends keyof RouteMap & string>(
