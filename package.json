@@ -17,9 +17,13 @@
     "@lezer/highlight": "^1.2.3",
     "@thexjs/adapter-vercel": "^1.0.9",
     "@thexjs/core": "^1.6.1",
+    "@types/katex": "^0.16.8",
+    "asciimath-to-latex": "^0.5.1",
     "codemirror": "^6.0.2",
     "dexie": "^4.4.5",
     "dexie-react-hooks": "^4.4.0",
+    "katex": "^0.18.4",
+    "marked": "^18.0.10",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "zustand": "^5.0.15"
