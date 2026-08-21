@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import FileTree from "./FileTree";
 import CodePane from "./CodePane";
 import PreviewPane from "./PreviewPane";
+import CommandPalette from "./command-palette";
+import OutlinePanel from "./outline-panel";
 import CompileStatusBar from "./CompileStatusBar";
 import ProjectLoadingScreen from "./ProjectLoadingScreen";
 import { useOnlineStatus, useEventListener } from "@thexjs/hooks";
@@ -60,6 +62,7 @@ function Editor({ projectId }: { projectId: string }) {
     <div className="flex h-full">
       <FileTree projectId={projectId} nodes={nodes ?? []} />
       <main className="flex min-w-0 flex-1 flex-col">
+        <CommandPalette />
         {activeId ? (
           <>
             <header className="flex items-center justify-between border-b border-border px-4 py-2 text-sm text-muted-foreground">
@@ -78,9 +81,14 @@ function Editor({ projectId }: { projectId: string }) {
           </div>
         )}
       </main>
-      <section className="w-1/3 border-l border-border">
+      <section className="flex w-1/3 border-l border-border">
         {activeId ? (
-          <PreviewPane chapterId={activeId} />
+          <>
+            <div className="min-w-0 flex-1" data-preview-pane>
+              <PreviewPane chapterId={activeId} />
+            </div>
+            <OutlinePanel chapterId={activeId} />
+          </>
         ) : (
           <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
             no chapter
