@@ -8,6 +8,8 @@ import SymbolPalette from "./symbol-palette";
 import { TEMPLATES, applyTemplate } from "./template-picker";
 import ProjectSearch from "./project-search";
 import CollabPane from "./collab-pane";
+import EditorErrorBoundary from "./editor-error-boundary";
+import OnboardingTour from "./onboarding-tour";
 import CompileStatusBar from "./CompileStatusBar";
 import ProjectLoadingScreen from "./ProjectLoadingScreen";
 import { useOnlineStatus, useEventListener } from "@thexjs/hooks";
@@ -41,6 +43,16 @@ export default function EditorIsland() {
 
   useEventListener("pagehide", () => void flushAllSaves());
 
+  useEffect(() => {
+    if (!("serviceWorker" in navigator) || !window.location.pathname.startsWith("/project/")) return;
+    void navigator.serviceWorker.register("/sw.js").catch(() => {});
+    void import("@/lib/snapshots").then(({ checkQuota }) =>
+      checkQuota().then((q) => {
+        if (q?.warning) console.warn(`[xtype] storage ${q.pct}% full`);
+      }),
+    );
+  }, []);
+
   if (!projectId) {
     return isNew ? (
       <ProjectLoadingScreen />
@@ -51,7 +63,12 @@ export default function EditorIsland() {
     );
   }
 
-  return <Editor projectId={projectId} />;
+  return (
+    <EditorErrorBoundary>
+      <Editor projectId={projectId} />
+      <OnboardingTour />
+    </EditorErrorBoundary>
+  );
 }
 
 function Editor({ projectId }: { projectId: string }) {

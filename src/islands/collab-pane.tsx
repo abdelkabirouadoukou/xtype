@@ -1,13 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { createClient } from "@liveblocks/client";
-import { LiveblocksYjsProvider } from "@liveblocks/yjs";
-import * as Y from "yjs";
-import { yCollab } from "y-codemirror.next";
-import { EditorState } from "@codemirror/state";
-import { EditorView, keymap } from "@codemirror/view";
-import { basicSetup } from "codemirror";
-import { indentWithTab } from "@codemirror/commands";
-import { xtypeLanguage } from "@/lib/editor/math-syntax";
 
 interface Props {
   chapterId: string;
@@ -15,68 +6,71 @@ interface Props {
   initialContent: string;
 }
 
+interface CollabGlobal {
+  mountCollab: (opts: {
+    el: HTMLElement;
+    chapterId: string;
+    projectId: string;
+    initialContent: string;
+    publicKey: string;
+    onError?: (message: string) => void;
+  }) => { destroy: () => void };
+}
+
 export default function CollabPane({ chapterId, projectId, initialContent }: Props) {
   const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const enteredLeaveRef = useRef<(() => void) | null>(null);
+  const destroyRef = useRef<{ destroy: () => void } | null>(null);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    type EnteredRoom = ReturnType<ReturnType<typeof createClient>["enterRoom"]>;
 
-    let provider: LiveblocksYjsProvider | null = null;
-    let view: EditorView | null = null;
-    let room: EnteredRoom["room"] | null = null;
+    const publicKey = (
+      window as unknown as { process?: { env?: Record<string, string> } }
+    ).process?.env?.THEXJS_PUBLIC_LIVEBLOCKS_KEY;
 
-    void (async () => {
-      try {
-        const publicKey = (window as unknown as { process?: { env?: Record<string, string> } })
-          .process?.env?.THEXJS_PUBLIC_LIVEBLOCKS_KEY;
-        if (!publicKey) throw new Error("Collaboration is not configured");
+    let cancelled = false;
 
-        const client = createClient({ publicApiKey: publicKey });
-        const entered: EnteredRoom = client.enterRoom(`project-${projectId}`, {
-          initialPresence: {},
-        });
-        room = entered.room;
-        enteredLeaveRef.current = entered.leave;
-        const ydoc = new Y.Doc();
-        provider = new LiveblocksYjsProvider(room, ydoc);
-        await new Promise<void>((resolve, reject) => {
-          provider!.on("synced", resolve);
-          provider!.on("error", reject);
-          setTimeout(resolve, 4000);
-        });
-        const ytext = ydoc.getText(`chapter-${chapterId}`);
-        if (ytext.length === 0 && initialContent) {
-          ydoc.transact(() => ytext.insert(0, initialContent));
-        }
-        const awareness = provider.awareness;
-        view = new EditorView({
-          parent: el,
-          state: EditorState.create({
-            doc: ytext.toString(),
-            extensions: [
-              basicSetup,
-              xtypeLanguage,
-              keymap.of([indentWithTab]),
-              yCollab(ytext, awareness, { undoManager: new Y.UndoManager(ytext) }),
-            ],
-          }),
-        });
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "collab unavailable");
-      }
-    })();
+    function cleanup() {
+      cancelled = true;
+      destroyRef.current?.destroy();
+      destroyRef.current = null;
+    }
 
-    return () => {
-      view?.destroy();
-      provider?.destroy();
-      try {
-      enteredLeaveRef.current?.();
-    } catch {}
-  };
+    if (!publicKey) {
+      setError("Collaboration is not configured");
+      return cleanup;
+    }
+
+    const existing = (window as unknown as { XTYPE_COLLAB?: CollabGlobal }).XTYPE_COLLAB;
+    const start = (api: CollabGlobal) => {
+      if (cancelled) return;
+      destroyRef.current = api.mountCollab({
+        el,
+        chapterId,
+        projectId,
+        initialContent,
+        publicKey,
+        onError: (m) => setError(m),
+      });
+    };
+
+    if (existing) {
+      start(existing);
+    } else {
+      const script = document.createElement("script");
+      script.src = "/collab/collab.js";
+      script.onload = () => {
+        const api = (window as unknown as { XTYPE_COLLAB?: CollabGlobal }).XTYPE_COLLAB;
+        if (api) start(api);
+        else setError("collab unavailable");
+      };
+      script.onerror = () => setError("collab unavailable");
+      document.head.appendChild(script);
+    }
+
+    return cleanup;
   }, [chapterId, projectId, initialContent]);
 
   if (error) {
