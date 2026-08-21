@@ -16,6 +16,17 @@ export function useProject(projectId: string) {
   }, [projectId]);
 
   useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      const { pullRemote } = await import("@/lib/sync/cloud-sync");
+      if (!cancelled) await pullRemote(projectId);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [projectId]);
+
+  useEffect(() => {
     if (!nodes) return;
     const files = nodes.filter((n) => n.type === "file");
     const chapters: Chapter[] = files.map((n) => ({
