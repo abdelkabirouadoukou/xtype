@@ -58,6 +58,7 @@ export default function FileTree({
   async function addFile(parentId: string | null) {
     const siblings = (childrenByParent.get(parentId) ?? []).length;
     await createFile(projectId, `chapter${siblings + 1}.md`, parentId, siblings);
+  // bib files created via rename or context action below
   }
 
   async function addFolder(parentId: string | null) {
