@@ -32,7 +32,7 @@ export default function EditorIsland() {
 }
 
 function Editor({ projectId }: { projectId: string }) {
-  useProject(projectId);
+  const { nodes } = useProject(projectId);
   const activeId = useProjectStore((s) => s.activeChapterId);
   const content = useProjectStore(
     (s) => (activeId ? s.chapters[activeId]?.content : undefined) ?? "",
@@ -41,7 +41,7 @@ function Editor({ projectId }: { projectId: string }) {
 
   return (
     <div className="flex h-full">
-      <FileTree projectId={projectId} />
+      <FileTree projectId={projectId} nodes={nodes ?? []} />
       <main className="flex min-w-0 flex-1 flex-col">
         {activeId ? (
           <>
