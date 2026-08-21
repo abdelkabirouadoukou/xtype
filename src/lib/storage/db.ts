@@ -57,6 +57,11 @@ class XTypeDB extends Dexie {
       nodes: "id, projectId, parentId, type, order",
       assets: "id, projectId",
     });
+    this.version(4).stores({
+      projects: "id, name, createdAt, deletedAt",
+      nodes: "id, projectId, parentId, type, order",
+      assets: "id, projectId",
+    });
   }
 }
 

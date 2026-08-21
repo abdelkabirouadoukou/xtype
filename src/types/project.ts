@@ -11,6 +11,7 @@ export interface ProjectRow {
   id: string;
   name: string;
   createdAt: number;
+  deletedAt?: number;
 }
 
 export interface ChapterRow {
