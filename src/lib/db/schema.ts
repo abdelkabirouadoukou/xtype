@@ -6,6 +6,7 @@ export const projects = pgTable("projects", {
   title: text("title").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  shareToken: text("share_token"),
 }, (t) => [uniqueIndex("projects_owner_id_idx").on(t.id, t.ownerId)]);
 
 export const nodes = pgTable("nodes", {

@@ -131,23 +131,18 @@ function ProjectCard({
       duplicate
     </button>,
     <button
-      key="export"
-      onClick={() => {
-        void (async () => {
-          const nodes = await db.nodes.where("projectId").equals(id).toArray();
-          const blob = new Blob(
-            [nodes.map((n) => `# ${n.name}\n\n${n.content ?? ""}`).join("\n\n---\n\n")],
-            { type: "text/markdown" },
-          );
-          const a = document.createElement("a");
-          a.href = URL.createObjectURL(blob);
-          a.download = `${name}.md`;
-          a.click();
-        })();
-      }}
+      key="export-html"
+      onClick={() => void import("@/lib/export").then(({ exportSingleFileHtml }) => exportSingleFileHtml(id, name))}
       className="hover:text-foreground"
     >
-      export
+      html
+    </button>,
+    <button
+      key="export-typ"
+      onClick={() => void import("@/lib/export").then(({ exportTypSource }) => exportTypSource(id, name))}
+      className="hover:text-foreground"
+    >
+      .typ
     </button>,
     deletedAt ? (
       <button key="restore" onClick={() => void restoreProject(id)} className="hover:text-foreground">
