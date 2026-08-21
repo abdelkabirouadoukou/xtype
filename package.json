@@ -10,6 +10,7 @@
     "prevercel-build": "bun scripts/build-workers.ts && bun scripts/build-collab.ts && bun scripts/build-docs.ts && bun scripts/build-search-index.ts",
     "build": "x build",
     "start": "x start",
+    "test": "bun test tests",
     "test:e2e": "playwright test",
     "vercel-build": "x build --adapter vercel"
   },
