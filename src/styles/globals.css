@@ -44,3 +44,31 @@ body {
   .prose-katex .katex-display, .prose-katex h1, .prose-katex h2, .prose-katex h3, .prose-katex p { break-inside: avoid; }
   @page { size: A4; margin: 2cm; }
 }
+
+.cm-tooltip.cm-tooltip-autocomplete {
+  border: 1px solid var(--border) !important;
+  background: var(--card) !important;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: var(--font-mono, monospace);
+}
+.cm-tooltip-autocomplete ul li[aria-selected] {
+  background: oklch(0.269 0 0) !important;
+  color: var(--fg) !important;
+}
+.cm-completionDetail {
+  color: var(--muted-fg);
+  font-style: normal !important;
+  margin-left: 1em;
+}
+.xtype-cm-info {
+  padding: 6px 10px;
+  font-size: 1rem;
+}
+.xtype-cm-info .katex { font-size: 1.15em; }
+.xtype-cm-info-source {
+  margin-top: 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75em;
+  color: var(--muted-fg);
+}
