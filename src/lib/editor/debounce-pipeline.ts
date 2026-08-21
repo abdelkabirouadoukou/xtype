@@ -3,44 +3,75 @@ import { saveChapterContent } from "@/lib/storage/use-project";
 import { requestCompile } from "@/lib/compiler/typst-client";
 import { queueCloudSyncForNode } from "@/lib/sync/cloud-sync";
 
+export interface PipelineCallbacks {
+  compile: () => void;
+  save: (chapterId: string, content: string) => Promise<void> | void;
+  cloudSync?: (chapterId: string) => void;
+}
+
+export interface PipelineOptions {
+  compileMs?: number;
+  saveMs?: number;
+  schedule?: (fn: () => void, ms: number) => () => void;
+}
+
 const COMPILE_DEBOUNCE = 250;
 const SAVE_DEBOUNCE = 2000;
 
-let compileTimer: ReturnType<typeof setTimeout> | null = null;
-const saveTimers = new Map<string, ReturnType<typeof setTimeout>>();
+const defaultSchedule: NonNullable<PipelineOptions["schedule"]> = (fn, ms) => {
+  const t = setTimeout(fn, ms);
+  return () => clearTimeout(t);
+};
 
-export function onEditorChange(chapterId: string, content: string) {
-  useProjectStore.getState().setActiveContent(chapterId, content);
+export function createPipeline(cb: PipelineCallbacks, opts: PipelineOptions = {}) {
+  const compileMs = opts.compileMs ?? COMPILE_DEBOUNCE;
+  const saveMs = opts.saveMs ?? SAVE_DEBOUNCE;
+  const schedule = opts.schedule ?? defaultSchedule;
 
-  if (compileTimer) clearTimeout(compileTimer);
-  compileTimer = setTimeout(() => requestCompile(), COMPILE_DEBOUNCE);
+  let cancelCompile: (() => void) | null = null;
+  const cancels = new Map<string, () => void>();
 
-  const existing = saveTimers.get(chapterId);
-  if (existing) clearTimeout(existing);
-  saveTimers.set(
-    chapterId,
-    setTimeout(() => {
-      saveTimers.delete(chapterId);
-      void flushSave(chapterId);
-    }, SAVE_DEBOUNCE),
-  );
-}
+  function onEditorChange(chapterId: string, content: string) {
+    useProjectStore.getState().setActiveContent(chapterId, content);
 
-export async function flushSave(chapterId: string) {
-  const timer = saveTimers.get(chapterId);
-  if (timer) {
-    clearTimeout(timer);
-    saveTimers.delete(chapterId);
+    cancelCompile?.();
+    cancelCompile = schedule(() => cb.compile(), compileMs);
+
+    cancels.get(chapterId)?.();
+    cancels.set(
+      chapterId,
+      schedule(() => {
+        cancels.delete(chapterId);
+        void flushSave(chapterId);
+      }, saveMs),
+    );
   }
-  const { chapters, markSaved } = useProjectStore.getState();
-  const chapter = chapters[chapterId];
-  if (!chapter?.dirty) return;
-  await saveChapterContent(chapterId, chapter.content);
-  markSaved(chapterId);
-  void queueCloudSyncForNode(chapterId);
+
+  async function flushSave(chapterId: string) {
+    cancels.get(chapterId)?.();
+    cancels.delete(chapterId);
+    const { chapters, markSaved } = useProjectStore.getState();
+    const chapter = chapters[chapterId];
+    if (!chapter?.dirty) return;
+    await cb.save(chapterId, chapter.content);
+    markSaved(chapterId);
+    cb.cloudSync?.(chapterId);
+  }
+
+  function flushAllSaves() {
+    const ids = [...cancels.keys()];
+    return Promise.all(ids.map((id) => flushSave(id)));
+  }
+
+  return { onEditorChange, flushSave, flushAllSaves };
 }
 
-export function flushAllSaves() {
-  const ids = [...saveTimers.keys()];
-  return Promise.all(ids.map((id) => flushSave(id)));
-}
+const defaultPipeline = createPipeline({
+  compile: () => requestCompile(),
+  save: saveChapterContent,
+  cloudSync: (chapterId) => void queueCloudSyncForNode(chapterId),
+});
+
+export const onEditorChange = defaultPipeline.onEditorChange;
+export const flushSave = defaultPipeline.flushSave;
+export const flushAllSaves = defaultPipeline.flushAllSaves;
