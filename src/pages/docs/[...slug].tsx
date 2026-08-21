@@ -30,7 +30,9 @@ export default function DocsPage({ loaderData }: DocPageProps) {
   return (
     <article className="prose-katex min-w-0">
       <h1>{doc.title}</h1>
-      {doc.slug === "writing/commands" && <Island name="command-reference" client="load" />}
+      {doc.slug === "writing/commands" && <Island name="command-reference" client="load">
+          <CommandReference />
+        </Island>}
       <div dangerouslySetInnerHTML={{ __html: doc.html }} />
       <a
         href={`https://github.com/abdelkabirouadoukou/xtype/edit/main/content-docs/${doc.slug}.md`}

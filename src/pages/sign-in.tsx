@@ -9,7 +9,9 @@ export default function SignInPage() {
       <h1 className="text-center font-[family-name:var(--font-serif)] text-3xl font-semibold">
         Welcome back
       </h1>
-      <Island name="clerk-mount" client="load" />
+      <Island name="clerk-mount" client="load">
+      <ClerkMount />
+    </Island>
     </div>
   );
 }
