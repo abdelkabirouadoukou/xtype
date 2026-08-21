@@ -10,8 +10,8 @@ for (const path of ["src/workers/compiler.worker.ts"]) {
   const result = await Bun.build({
     entrypoints: [path],
     target: "browser",
-    format: "esm",
-    minify: true,
+    format: "iife",
+    minify: process.env.WORKERS_DEBUG ? false : true,
     naming: `${name}.js`,
     outdir,
   });

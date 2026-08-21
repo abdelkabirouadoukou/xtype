@@ -1,5 +1,25 @@
 import { createTypstCompiler } from "typst-wasm";
-import { createWebWorker } from "typst-wasm/worker/browser";
+
+interface WorkerHost {
+  listen: (onMessage: (data: unknown) => void, onError: (err: unknown) => void) => void;
+  postMessage: (data: unknown) => void;
+  terminate: () => void;
+}
+
+function createClassicWorker(workerUrl: string): WorkerHost {
+  const src = `importScripts("${new URL(workerUrl, location.origin).href}");`;
+  const url = URL.createObjectURL(new Blob([src], { type: "application/javascript" }));
+  const worker = new Worker(url);
+  return {
+    listen: (onMessage, onError) => {
+      worker.onmessage = (event) => onMessage(event.data);
+      worker.onerror = (event) =>
+        onError((event as ErrorEvent).error ?? (event as ErrorEvent).message);
+    },
+    postMessage: (data) => worker.postMessage(data),
+    terminate: () => worker.terminate(),
+  };
+}
 
 const FONTS = [
   "/fonts/LibertinusSerif-Regular.otf",
@@ -8,7 +28,7 @@ const FONTS = [
   "/fonts/NewCMMath-Regular.otf",
   "/fonts/NewCMMath-Book.otf",
   "/fonts/DejaVuSansMono.ttf",
-];
+].map((p) => new URL(p, location.origin).href);
 
 let latestGen = 0;
 let compilerPromise: Promise<Awaited<ReturnType<typeof createTypstCompiler>>> | null =
@@ -18,16 +38,16 @@ async function getCompiler() {
   compilerPromise ??= (async () => {
     const compiler = await createTypstCompiler({
       backend: "auto",
-      worker: () => createWebWorker("/workers/typst-engine.js"),
+      worker: () => createClassicWorker("/workers/typst-engine.js"),
       coreModules: {
         "engine.core.wasm": WebAssembly.compileStreaming(
-          fetch("/wasm/engine.core.wasm"),
+          fetch(new URL("/wasm/engine.core.wasm", location.origin).href),
         ),
         "engine.core2.wasm": WebAssembly.compileStreaming(
-          fetch("/wasm/engine.core2.wasm"),
+          fetch(new URL("/wasm/engine.core2.wasm", location.origin).href),
         ),
         "engine.core3.wasm": WebAssembly.compileStreaming(
-          fetch("/wasm/engine.core3.wasm"),
+          fetch(new URL("/wasm/engine.core3.wasm", location.origin).href),
         ),
       },
     });
@@ -89,10 +109,21 @@ self.onmessage = async (e: MessageEvent) => {
     );
   } catch (err) {
     if (gen !== latestGen) return;
+    const diags = (err as { diagnostics?: Array<{ message?: string; rendered?: string }> })
+      ?.diagnostics;
+    const detail =
+      Array.isArray(diags) && diags.length > 0
+        ? diags
+            .map((d) => d.rendered ?? d.message ?? String(d))
+            .join("\n")
+            .slice(0, 2000)
+        : err instanceof Error
+          ? `${err.message}\n${err.stack ?? ""}`
+          : String(err);
     (self as unknown as Worker).postMessage({
       type: "error",
       gen,
-      message: String(err).slice(0, 2000),
+      message: detail.slice(0, 2000),
     });
   }
 };

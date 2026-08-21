@@ -5,9 +5,15 @@ const WORKER_URL = "/workers/compiler.js";
 let worker: Worker | null = null;
 let generation = 0;
 
+function spawnCompilerWorker(): Worker {
+  const src = `importScripts("${location.origin}${WORKER_URL}");`;
+  const url = URL.createObjectURL(new Blob([src], { type: "application/javascript" }));
+  return new Worker(url);
+}
+
 function getWorker(): Worker {
   if (worker) return worker;
-  worker = new Worker(WORKER_URL, { type: "module" });
+  worker = spawnCompilerWorker();
   worker.onmessage = (
     e: MessageEvent<{
       type: "result" | "error";
