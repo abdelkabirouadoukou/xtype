@@ -5,7 +5,11 @@
     "": {
       "name": "xtype",
       "dependencies": {
+        "@codemirror/commands": "^6.11.0",
         "@codemirror/language": "^6.12.4",
+        "@codemirror/state": "^6.7.1",
+        "@codemirror/view": "^6.43.9",
+        "@lezer/highlight": "^1.2.3",
         "@thexjs/adapter-vercel": "^1.0.9",
         "@thexjs/core": "^1.6.1",
         "codemirror": "^6.0.2",
