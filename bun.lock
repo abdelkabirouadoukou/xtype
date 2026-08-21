@@ -6,6 +6,7 @@
       "name": "xtype",
       "dependencies": {
         "@codemirror/language": "^6.12.4",
+        "@thexjs/adapter-vercel": "^1.0.9",
         "@thexjs/core": "^1.6.1",
         "codemirror": "^6.0.2",
         "dexie": "^4.4.5",
@@ -115,6 +116,8 @@
     "@tailwindcss/oxide-win32-arm64-msvc": ["@tailwindcss/oxide-win32-arm64-msvc@4.3.3", "", { "os": "win32", "cpu": "arm64" }, "sha512-3rc292Ca2ceK6Ulcc/bAVnTs/3nDtoPhyEKlgPv+yQJQi/JS/AMJlqzxvlDacL1nekbrcf6bTqp/jV4qgnPxNQ=="],
 
     "@tailwindcss/oxide-win32-x64-msvc": ["@tailwindcss/oxide-win32-x64-msvc@4.3.3", "", { "os": "win32", "cpu": "x64" }, "sha512-yJ0pwIVc/nYeGoV02WtsN8KYyLQv7kyI2wDnkezyJlGGjkd4QLwDGAwl47YpPJeuI0M0ObaXGSPjvWDPeTPggw=="],
+
+    "@thexjs/adapter-vercel": ["@thexjs/adapter-vercel@1.0.9", "", { "dependencies": { "@thexjs/core": "^1.3.2", "react": "^19.0.0" } }, "sha512-ny42/r371lf4eTrbXnXNK8Hetu3Sz+bEQkfDjPwfkF7S8ODOPBnad1c8HFCVnAx7B5T1bbuzaTdMXuJQDFNoow=="],
 
     "@thexjs/cli": ["@thexjs/cli@1.1.2", "", { "dependencies": { "@thexjs/core": "^1.3.6" }, "peerDependencies": { "@thexjs/adapter-vercel": "^1.0.5" }, "optionalPeers": ["@thexjs/adapter-vercel"], "bin": { "x": "dist/index.js" } }, "sha512-c/XP2rsyo3/GvTrKExKgkFG1A6cdV0WI8uJXXRr1J3ryxLxy8pLPvAeF6cT8cGFZn17tLDMI/4BZ+gwafTymsA=="],
 
