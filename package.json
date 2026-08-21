@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "predev": "bun scripts/build-workers.ts",
+    "predev": "bun scripts/build-workers.ts && bun scripts/generate-command-docs.ts",
     "dev": "x dev",
-    "prebuild": "bun scripts/build-workers.ts",
+    "prebuild": "bun scripts/build-workers.ts && bun scripts/generate-command-docs.ts",
     "build": "x build",
     "start": "x start",
     "vercel-build": "x build --adapter vercel"
