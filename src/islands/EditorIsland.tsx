@@ -113,6 +113,40 @@ function Editor({ projectId }: { projectId: string }) {
                 >
                   split
                 </button>
+                <button
+                  className="hover:text-foreground"
+                  title="Push to GitHub"
+                  onClick={() => {
+                    const dest = prompt("GitHub repo (owner/name):", localStorage.getItem("xtype:gh-repo") ?? "");
+                    if (!dest?.includes("/")) return;
+                    localStorage.setItem("xtype:gh-repo", dest);
+                    const [o, r] = dest.split("/");
+                    void import("@/lib/github-sync").then(({ pushToRepo }) =>
+                      pushToRepo(o, r, projectId).then((res) =>
+                        alert(res.conflicts.length ? `Conflicts: ${res.conflicts.join(", ")}` : `Pushed ${res.pushed} files`),
+                      ),
+                    );
+                  }}
+                >
+                  gh↑
+                </button>
+                <button
+                  className="hover:text-foreground"
+                  title="Pull from GitHub"
+                  onClick={() => {
+                    const dest = prompt("GitHub repo (owner/name):", localStorage.getItem("xtype:gh-repo") ?? "");
+                    if (!dest?.includes("/")) return;
+                    localStorage.setItem("xtype:gh-repo", dest);
+                    const [o, r] = dest.split("/");
+                    void import("@/lib/github-sync").then(({ pullFromRepo }) =>
+                      pullFromRepo(o, r, projectId)
+                        .then((n) => alert(`Pulled ${n} files`))
+                        .catch((e) => alert(e.message)),
+                    );
+                  }}
+                >
+                  gh↓
+                </button>
                 <CompileStatusBar />
                 <SaveBadge />
               </span>
