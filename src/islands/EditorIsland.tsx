@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import FileTree from "./FileTree";
 import CodePane from "./CodePane";
 import PreviewPane from "./PreviewPane";
+import CompileStatusBar from "./CompileStatusBar";
 import { useProject } from "@/lib/storage/use-project";
 import { useProjectStore } from "@/lib/state/project-store";
 import { flushAllSaves } from "@/lib/editor/debounce-pipeline";
@@ -45,7 +46,10 @@ function Editor({ projectId }: { projectId: string }) {
           <>
             <header className="flex items-center justify-between border-b border-border px-4 py-2 text-sm text-muted-foreground">
               <span>{projectId}</span>
-              <StatusBadges />
+              <span className="flex items-center gap-4">
+                <CompileStatusBar />
+                <SaveBadge />
+              </span>
             </header>
             <CodePane key={activeId} chapterId={activeId} initialContent={content} />
           </>
@@ -68,22 +72,13 @@ function Editor({ projectId }: { projectId: string }) {
   );
 }
 
-function StatusBadges() {
+function SaveBadge() {
   const dirtyCount = useProjectStore(
     (s) => Object.values(s.chapters).filter((c) => c.dirty).length,
   );
-  const compileStatus = useProjectStore((s) => s.compileStatus);
-
-  return (
-    <span className="flex gap-3">
-      {compileStatus === "compiling" && (
-        <span className="text-yellow-500">compiling…</span>
-      )}
-      {dirtyCount > 0 ? (
-        <span>unsaved: {dirtyCount}</span>
-      ) : (
-        <span className="text-green-500">saved</span>
-      )}
-    </span>
+  return dirtyCount > 0 ? (
+    <span>unsaved: {dirtyCount}</span>
+  ) : (
+    <span className="text-green-500">saved</span>
   );
 }
