@@ -9,7 +9,7 @@
     "prebuild": "bun scripts/build-workers.ts",
     "build": "x build",
     "start": "x start",
-    "vercel-build": "bun scripts/build-workers.ts && x build --adapter vercel"
+    "vercel-build": "x build --adapter vercel"
   },
   "dependencies": {
     "@codemirror/commands": "^6.11.0",
