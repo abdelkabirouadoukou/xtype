@@ -2,6 +2,7 @@
 export type RouteMap = {
   "/settings": Record<string, never>;
   "/": Record<string, never>;
+  "/project/:projectId": { projectId: string };
 };
 
 export function href<T extends keyof RouteMap & string>(
