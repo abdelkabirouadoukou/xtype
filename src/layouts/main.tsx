@@ -51,6 +51,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           Docs
         </a>
         <a
+          href="/dashboard"
+          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Projects
+        </a>
+        <a
           href="/settings"
           className="text-sm text-muted-foreground transition-colors hover:text-foreground"
         >

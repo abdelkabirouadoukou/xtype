@@ -6,6 +6,7 @@ import CommandPalette from "./command-palette";
 import OutlinePanel from "./outline-panel";
 import SymbolPalette from "./symbol-palette";
 import { TEMPLATES, applyTemplate } from "./template-picker";
+import ProjectSearch from "./project-search";
 import CompileStatusBar from "./CompileStatusBar";
 import ProjectLoadingScreen from "./ProjectLoadingScreen";
 import { useOnlineStatus, useEventListener } from "@thexjs/hooks";
@@ -91,6 +92,7 @@ function Editor({ projectId }: { projectId: string }) {
       <FileTree projectId={projectId} nodes={nodes ?? []} />
       <main className="flex min-w-0 flex-1 flex-col">
         <CommandPalette />
+        <ProjectSearch />
         {activeId ? (
           <>
             <header className="flex items-center justify-between border-b border-border px-4 py-2 text-sm text-muted-foreground">

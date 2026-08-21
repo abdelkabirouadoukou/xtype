@@ -2,6 +2,7 @@
 export type RouteMap = {
   "/settings": Record<string, never>;
   "/": Record<string, never>;
+  "/dashboard": Record<string, never>;
   "/docs": Record<string, never>;
   "/docs/*": { slug: string };
   "/project/:projectId": { projectId: string };
