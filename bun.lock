@@ -8,12 +8,16 @@
         "@codemirror/language": "^6.12.4",
         "@thexjs/core": "^1.6.1",
         "codemirror": "^6.0.2",
+        "dexie": "^4.4.5",
+        "dexie-react-hooks": "^4.4.0",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
+        "zustand": "^5.0.15",
       },
       "devDependencies": {
         "@tailwindcss/cli": "^4.3.3",
         "@thexjs/cli": "^1.1.x",
+        "@types/bun": "^1.4.0",
         "@types/react": "^19.1.0",
         "@types/react-dom": "^19.1.0",
         "tailwindcss": "^4.3.3",
@@ -116,11 +120,17 @@
 
     "@thexjs/core": ["@thexjs/core@1.7.0", "", { "peerDependencies": { "react": "^19.0.0", "react-dom": "^19.0.0" } }, "sha512-W2tRV1AIi+8j29W7XJ/kgUdDxTTulJ7ih+Em1RGBLnujaTUOdR96mKuHI4bZnBDlXuS1a1HcNc0VzEvBGeYBpw=="],
 
+    "@types/bun": ["@types/bun@1.4.0", "", { "dependencies": { "bun-types": "1.4.0" } }, "sha512-K+lZULY23vRgK/CfTjFIV+tyifaNdSMlPh9j+6mQ/cLfpOznLyAuzgV/JQysyECpkBQLVMSyvjlr2fBUSA9wFQ=="],
+
+    "@types/node": ["@types/node@26.2.0", "", { "dependencies": { "undici-types": "~8.3.0" } }, "sha512-5IviulTZeRNp2vAJ514cc/HUlY5nZ9fCbq9DMyC52BrhFZACo3nI0R7qBxhQmo/d27NFe96ur/b7Wwxklda+kg=="],
+
     "@types/react": ["@types/react@19.2.18", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-AnzbBERsrLKtk2XSfTbYRLjQPdy116Sty4q+T+Bp3IC4l6jNBvreVPAHmpq9qhXQM7CXZPjLVmGMw9sy+hxQ3w=="],
 
     "@types/react-dom": ["@types/react-dom@19.2.4", "", { "peerDependencies": { "@types/react": "^19.2.0" } }, "sha512-Bsc+QHgp+P/F02XDzNCY9jnZNCUuLki36KT7VKrTXXLdHf+vHMNZnW1rVu5DNW/rCK+fya3DATySbLM4yhtKUw=="],
 
     "braces": ["braces@3.0.3", "", { "dependencies": { "fill-range": "^7.1.1" } }, "sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA=="],
+
+    "bun-types": ["bun-types@1.4.0", "", { "dependencies": { "@types/node": "*" } }, "sha512-iIKw23BspnQQYd3prITOBxeUsxBHnwzX6YJfGMuNOZzeNcMmVqzIIVGRm1l69ogaPQmb4wB6BN8mA5bE9YuC5Q=="],
 
     "codemirror": ["codemirror@6.0.2", "", { "dependencies": { "@codemirror/autocomplete": "^6.0.0", "@codemirror/commands": "^6.0.0", "@codemirror/language": "^6.0.0", "@codemirror/lint": "^6.0.0", "@codemirror/search": "^6.0.0", "@codemirror/state": "^6.0.0", "@codemirror/view": "^6.0.0" } }, "sha512-VhydHotNW5w1UGK0Qj96BwSk/Zqbp9WbnyK2W/eVMv4QyF41INRGpjUhFJY7/uDNuudSc33a/PKr4iDqRduvHw=="],
 
@@ -129,6 +139,10 @@
     "csstype": ["csstype@3.2.3", "", {}, "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="],
 
     "detect-libc": ["detect-libc@1.0.3", "", { "bin": { "detect-libc": "./bin/detect-libc.js" } }, "sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg=="],
+
+    "dexie": ["dexie@4.4.5", "", {}, "sha512-wWCHdihT3dmlUSuNhn5mMZDWSpG0suxjAni7YjjiZdzabZcKmy3uNZGZ7AeYYXBoLbpSXX35fikPLkPC44Osiw=="],
+
+    "dexie-react-hooks": ["dexie-react-hooks@4.4.0", "", { "peerDependencies": { "dexie": ">=4.2.0-alpha.1 <5.0.0", "react": ">=16" } }, "sha512-ObLXBS5+4BJU8vtSvBx6b9fY6zZYgniAtwxzjCHsUQadgbqYN6935X2/1TWw4Rf2N1aZV1io5/ziox4vKuxABA=="],
 
     "enhanced-resolve": ["enhanced-resolve@5.24.5", "", { "dependencies": { "graceful-fs": "^4.2.4", "tapable": "^2.3.3" } }, "sha512-L1l8TNvomm6UVW5B253AGxQagSQr+vGwhMlrrfRS2qmhx46AMpMVJKQYLvWYbysTMY8VoicOvzHzoHMbyzB+4A=="],
 
@@ -198,7 +212,11 @@
 
     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
+    "undici-types": ["undici-types@8.3.0", "", {}, "sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ=="],
+
     "w3c-keyname": ["w3c-keyname@2.2.8", "", {}, "sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ=="],
+
+    "zustand": ["zustand@5.0.15", "", { "peerDependencies": { "@types/react": ">=18.0.0", "immer": ">=9.0.6", "react": ">=18.0.0", "use-sync-external-store": ">=1.2.0" }, "optionalPeers": ["@types/react", "immer", "react", "use-sync-external-store"] }, "sha512-MpSEjRiBkA9crSYeOUH32rJC7SVqAbm0Fqcqge/bUi2PPoLcBWKOsG+C8mevmpr8TwXHBVkChbbJiyvkE+i/3A=="],
 
     "@tailwindcss/oxide-wasm32-wasi/@emnapi/core": ["@emnapi/core@1.11.3", "", { "dependencies": { "@emnapi/wasi-threads": "1.2.3", "tslib": "^2.4.0" }, "bundled": true }, "sha512-zLpS5asjEb7lq8jYLq37N6XKaE41DIexlY1rF/z4/tIl3wo13Sqm28fRyfIsKZD+NZ8mM5RoKkpW/rBcuoSZSg=="],
 
