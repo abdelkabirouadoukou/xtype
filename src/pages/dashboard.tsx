@@ -17,7 +17,9 @@ export default function DashboardPage() {
           New project
         </a>
       </div>
-      <Island name="dashboard-island" client="load" />
+      <Island name="dashboard-island" client="load">
+        <DashboardIsland />
+      </Island>
     </div>
   );
 }

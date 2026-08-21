@@ -62,7 +62,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         >
           Settings
         </a>
-        <Island name="auth-bar" client="load" />
+        <Island name="auth-bar" client="load">
+          <AuthBar />
+        </Island>
       </nav>
       <main>{children}</main>
     </>

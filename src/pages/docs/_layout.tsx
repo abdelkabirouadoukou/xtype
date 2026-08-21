@@ -13,11 +13,17 @@ export const islands = {
 export default function DocsLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <Island name="docs-search" client="load" />
+      <Island name="docs-search" client="load">
+        <DocsSearch />
+      </Island>
       <div className="mx-auto flex max-w-6xl gap-10 px-6 py-8">
-        <Island name="docs-sidebar" client="load" />
+        <Island name="docs-sidebar" client="load">
+          <DocsSidebar />
+        </Island>
         <div className="min-w-0 flex-1">{children}</div>
-        <Island name="toc-rail" client="load" />
+        <Island name="toc-rail" client="load">
+          <TocRail />
+        </Island>
       </div>
     </>
   );
