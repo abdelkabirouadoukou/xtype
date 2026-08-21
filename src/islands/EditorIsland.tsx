@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { EditorView } from "codemirror";
 import FileTree from "./FileTree";
+import CodePane from "./CodePane";
 import { useProject } from "@/lib/storage/use-project";
 import { useProjectStore } from "@/lib/state/project-store";
+import { flushAllSaves } from "@/lib/editor/debounce-pipeline";
 
 export default function EditorIsland() {
   const [projectId, setProjectId] = useState<string | null>(null);
@@ -12,6 +13,9 @@ export default function EditorIsland() {
     if (parts[0] === "project" && parts[1]) {
       setProjectId(decodeURIComponent(parts[1]));
     }
+    const onLeave = () => void flushAllSaves();
+    window.addEventListener("pagehide", onLeave);
+    return () => window.removeEventListener("pagehide", onLeave);
   }, []);
 
   if (!projectId) {
@@ -28,39 +32,51 @@ export default function EditorIsland() {
 function Editor({ projectId }: { projectId: string }) {
   useProject(projectId);
   const activeId = useProjectStore((s) => s.activeChapterId);
-  const cmRef = useRef<HTMLDivElement>(null);
-  const [cmReady, setCmReady] = useState(false);
-
-  useEffect(() => {
-    if (!cmRef.current) return;
-    const view = new EditorView({
-      parent: cmRef.current,
-      doc: "Hello $x^2$ — editing loop lands in #5.",
-    });
-    setCmReady(true);
-    return () => view.destroy();
-  }, []);
+  const content = useProjectStore(
+    (s) => (activeId ? s.chapters[activeId]?.content : undefined) ?? "",
+  );
 
   return (
     <div className="flex h-full">
       <FileTree projectId={projectId} />
-      <main className="flex flex-1 flex-col">
-        <header className="border-b border-border px-4 py-2 text-sm text-muted-foreground">
-          project: <span className="text-foreground">{projectId}</span>
-          {" · "}
-          active: <span className="text-foreground">{activeId ?? "none"}</span>
-          {" · "}
-          {cmReady ? (
-            <span className="text-green-500">editor ready</span>
-          ) : (
-            "mounting…"
-          )}
-        </header>
-        <div ref={cmRef} className="flex-1 overflow-auto bg-card p-2" />
+      <main className="flex min-w-0 flex-1 flex-col">
+        {activeId ? (
+          <>
+            <header className="flex items-center justify-between border-b border-border px-4 py-2 text-sm text-muted-foreground">
+              <span>{projectId}</span>
+              <StatusBadges />
+            </header>
+            <CodePane key={activeId} chapterId={activeId} initialContent={content} />
+          </>
+        ) : (
+          <div className="flex flex-1 items-center justify-center text-muted-foreground">
+            No chapters yet — create one on the left.
+          </div>
+        )}
       </main>
       <section className="flex w-1/3 items-center justify-center border-l border-border text-sm text-muted-foreground">
         preview pane (#6)
       </section>
     </div>
+  );
+}
+
+function StatusBadges() {
+  const dirtyCount = useProjectStore(
+    (s) => Object.values(s.chapters).filter((c) => c.dirty).length,
+  );
+  const compileStatus = useProjectStore((s) => s.compileStatus);
+
+  return (
+    <span className="flex gap-3">
+      {compileStatus === "compiling" && (
+        <span className="text-yellow-500">compiling…</span>
+      )}
+      {dirtyCount > 0 ? (
+        <span>unsaved: {dirtyCount}</span>
+      ) : (
+        <span className="text-green-500">saved</span>
+      )}
+    </span>
   );
 }
