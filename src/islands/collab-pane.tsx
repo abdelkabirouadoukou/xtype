@@ -18,13 +18,16 @@ interface Props {
 export default function CollabPane({ chapterId, projectId, initialContent }: Props) {
   const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const enteredLeaveRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    let room: ReturnType<ReturnType<typeof createClient>["enterRoom"]> | null = null;
+    type EnteredRoom = ReturnType<ReturnType<typeof createClient>["enterRoom"]>;
+
     let provider: LiveblocksYjsProvider | null = null;
     let view: EditorView | null = null;
+    let room: EnteredRoom["room"] | null = null;
 
     void (async () => {
       try {
@@ -33,7 +36,11 @@ export default function CollabPane({ chapterId, projectId, initialContent }: Pro
         if (!publicKey) throw new Error("Collaboration is not configured");
 
         const client = createClient({ publicApiKey: publicKey });
-        room = client.enterRoom(`project-${projectId}`, { initialPresence: {} });
+        const entered: EnteredRoom = client.enterRoom(`project-${projectId}`, {
+          initialPresence: {},
+        });
+        room = entered.room;
+        enteredLeaveRef.current = entered.leave;
         const ydoc = new Y.Doc();
         provider = new LiveblocksYjsProvider(room, ydoc);
         await new Promise<void>((resolve, reject) => {
@@ -67,10 +74,9 @@ export default function CollabPane({ chapterId, projectId, initialContent }: Pro
       view?.destroy();
       provider?.destroy();
       try {
-        room?.leave();
-      } catch {}
-      room = null;
-    };
+      enteredLeaveRef.current?.();
+    } catch {}
+  };
   }, [chapterId, projectId, initialContent]);
 
   if (error) {
