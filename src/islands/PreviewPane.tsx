@@ -29,13 +29,22 @@ export default function PreviewPane({ chapterId }: { chapterId: string }) {
           </ModeButton>
         </div>
         {pdfUrl && (
-          <a
-            href={pdfUrl}
-            download="xtype.pdf"
-            className="text-muted-foreground hover:text-foreground"
-          >
-            ↓ download
-          </a>
+          <span className="flex gap-3">
+            <button
+              onClick={() => window.print()}
+              className="text-muted-foreground hover:text-foreground"
+              title="Print the fast preview (browser save-as-PDF)"
+            >
+              ⎙ print
+            </button>
+            <a
+              href={pdfUrl}
+              download="xtype.pdf"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              ↓ pdf
+            </a>
+          </span>
         )}
       </div>
       <div className="flex-1 overflow-y-auto bg-white">
