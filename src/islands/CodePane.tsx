@@ -4,6 +4,7 @@ import { EditorView, keymap } from "@codemirror/view";
 import { basicSetup } from "codemirror";
 import { indentWithTab } from "@codemirror/commands";
 import { xtypeLanguage } from "@/lib/editor/math-syntax";
+import { mathAutocomplete } from "@/lib/editor/completions/completion-source";
 import { onEditorChange, flushSave } from "@/lib/editor/debounce-pipeline";
 
 interface Props {
@@ -25,6 +26,7 @@ export default function CodePane({ chapterId, initialContent }: Props) {
         extensions: [
           basicSetup,
           xtypeLanguage,
+          mathAutocomplete,
           keymap.of([indentWithTab]),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
