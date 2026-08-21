@@ -4,6 +4,8 @@ import CodePane from "./CodePane";
 import PreviewPane from "./PreviewPane";
 import CommandPalette from "./command-palette";
 import OutlinePanel from "./outline-panel";
+import SymbolPalette from "./symbol-palette";
+import { TEMPLATES, applyTemplate } from "./template-picker";
 import CompileStatusBar from "./CompileStatusBar";
 import ProjectLoadingScreen from "./ProjectLoadingScreen";
 import { useOnlineStatus, useEventListener } from "@thexjs/hooks";
@@ -137,11 +139,24 @@ function Editor({ projectId }: { projectId: string }) {
             </div>
           </>
         ) : (
-          <div className="flex flex-1 items-center justify-center text-muted-foreground">
-            No chapters yet — create one on the left.
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 text-muted-foreground">
+            <span>Start from a template:</span>
+            <div className="grid grid-cols-2 gap-3">
+              {TEMPLATES.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => void applyTemplate(projectId, null, t.id)}
+                  className="rounded-xl border border-border bg-card px-4 py-3 text-left transition-colors hover:border-accent"
+                >
+                  <p className="text-sm font-medium text-foreground">{t.label}</p>
+                  <p className="text-xs">{t.description}</p>
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </main>
+      <SymbolPalette getView={() => (window as unknown as { __xtypeView?: unknown }).__xtypeView ?? null} />
       <section className="flex w-1/3 border-l border-border">
         {activeId ? (
           <>
