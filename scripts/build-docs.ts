@@ -12,6 +12,7 @@ interface DocEntry {
   title: string;
   section: string;
   html: string;
+  headings: { id: string; text: string; level: number }[];
 }
 
 function parseFrontmatter(raw: string): { fm: Record<string, string>; body: string } {
@@ -52,12 +53,23 @@ for (const file of files) {
   const raw = readFileSync(file, "utf-8");
   const { fm, body } = parseFrontmatter(raw);
   const { text, slots } = substituteMath(body);
-  const html = restoreMath(marked.parse(text, { async: false }), slots);
+  const rawHtml = marked.parse(text, { async: false });
+  const headings: DocEntry["headings"] = [];
+  let h = 0;
+  const html = restoreMath(
+    rawHtml.replace(/<h([23])>([\s\S]*?)<\/h\1>/g, (_, lvl, inner) => {
+      const id = `h-${h++}`;
+      headings.push({ id, text: inner.replace(/<[^>]*>/g, ""), level: Number(lvl) });
+      return `<h${lvl} id="${id}">${inner}</h${lvl}>`;
+    }),
+    slots,
+  );
   entries.push({
     slug,
     title: fm.title ?? slug,
     section: segments.length > 1 ? segments[0] : "",
     html,
+    headings,
   });
 }
 
@@ -66,6 +78,7 @@ const ts = `export interface DocEntry {
   title: string;
   section: string;
   html: string;
+  headings: { id: string; text: string; level: number }[];
 }
 
 export const DOCS: DocEntry[] = ${JSON.stringify(entries, null, 2)};

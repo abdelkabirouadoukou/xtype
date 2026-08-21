@@ -1,0 +1,632 @@
+[
+  {
+    "trigger": "\\alpha",
+    "label": "\\alpha",
+    "category": "greek",
+    "detail": "Greek: α"
+  },
+  {
+    "trigger": "\\angle",
+    "label": "\\angle",
+    "category": "misc",
+    "detail": "Angle: ∠"
+  },
+  {
+    "trigger": "\\approx",
+    "label": "\\approx",
+    "category": "arithmetic",
+    "detail": "Approximately: ≈"
+  },
+  {
+    "trigger": "\\bar",
+    "label": "\\bar{}",
+    "category": "structure",
+    "detail": "Bar accent"
+  },
+  {
+    "trigger": "\\begin{cases}",
+    "label": "\\begin{cases}",
+    "category": "structure",
+    "detail": "Cases environment"
+  },
+  {
+    "trigger": "\\begin{matrix}",
+    "label": "\\begin{matrix}",
+    "category": "structure",
+    "detail": "Matrix environment"
+  },
+  {
+    "trigger": "\\beta",
+    "label": "\\beta",
+    "category": "greek",
+    "detail": "Greek: β"
+  },
+  {
+    "trigger": "\\binom",
+    "label": "\\binom{}{}",
+    "category": "structure",
+    "detail": "Binomial coefficient"
+  },
+  {
+    "trigger": "\\cap",
+    "label": "\\cap",
+    "category": "sets",
+    "detail": "Intersection: ∩"
+  },
+  {
+    "trigger": "\\cdot",
+    "label": "\\cdot",
+    "category": "arithmetic",
+    "detail": "Center dot: ⋅"
+  },
+  {
+    "trigger": "\\cdots",
+    "label": "\\cdots",
+    "category": "misc",
+    "detail": "Center dots: ⋯"
+  },
+  {
+    "trigger": "\\chi",
+    "label": "\\chi",
+    "category": "greek",
+    "detail": "Greek: χ"
+  },
+  {
+    "trigger": "\\cup",
+    "label": "\\cup",
+    "category": "sets",
+    "detail": "Union: ∪"
+  },
+  {
+    "trigger": "\\degree",
+    "label": "^{\\circ}",
+    "category": "arithmetic",
+    "detail": "Degree sign"
+  },
+  {
+    "trigger": "\\delta",
+    "label": "\\delta",
+    "category": "greek",
+    "detail": "Greek: δ"
+  },
+  {
+    "trigger": "\\Delta",
+    "label": "\\Delta",
+    "category": "greek",
+    "detail": "Greek: Δ"
+  },
+  {
+    "trigger": "\\div",
+    "label": "\\div",
+    "category": "arithmetic",
+    "detail": "Division: ÷"
+  },
+  {
+    "trigger": "\\emptyset",
+    "label": "\\emptyset",
+    "category": "sets",
+    "detail": "Empty set: ∅"
+  },
+  {
+    "trigger": "\\epsilon",
+    "label": "\\epsilon",
+    "category": "greek",
+    "detail": "Greek: ε"
+  },
+  {
+    "trigger": "\\equiv",
+    "label": "\\equiv",
+    "category": "arithmetic",
+    "detail": "Equivalent: ≡"
+  },
+  {
+    "trigger": "\\eta",
+    "label": "\\eta",
+    "category": "greek",
+    "detail": "Greek: η"
+  },
+  {
+    "trigger": "\\exists",
+    "label": "\\exists",
+    "category": "logic",
+    "detail": "There exists: ∃"
+  },
+  {
+    "trigger": "\\forall",
+    "label": "\\forall",
+    "category": "logic",
+    "detail": "For all: ∀"
+  },
+  {
+    "trigger": "\\frac",
+    "label": "\\frac{}{}",
+    "category": "structure",
+    "detail": "Fraction"
+  },
+  {
+    "trigger": "\\gamma",
+    "label": "\\gamma",
+    "category": "greek",
+    "detail": "Greek: γ"
+  },
+  {
+    "trigger": "\\Gamma",
+    "label": "\\Gamma",
+    "category": "greek",
+    "detail": "Greek: Γ"
+  },
+  {
+    "trigger": "\\geq",
+    "label": "\\geq",
+    "category": "arithmetic",
+    "detail": "Greater or equal: ≥"
+  },
+  {
+    "trigger": "\\hat",
+    "label": "\\hat{}",
+    "category": "structure",
+    "detail": "Hat accent"
+  },
+  {
+    "trigger": "\\iff",
+    "label": "\\iff",
+    "category": "logic",
+    "detail": "If and only if: ⇔"
+  },
+  {
+    "trigger": "\\iint",
+    "label": "\\iint_{D}",
+    "category": "calculus",
+    "detail": "Double integral"
+  },
+  {
+    "trigger": "\\implies",
+    "label": "\\implies",
+    "category": "logic",
+    "detail": "Implies: ⇒"
+  },
+  {
+    "trigger": "\\in",
+    "label": "\\in",
+    "category": "sets",
+    "detail": "Element of: ∈"
+  },
+  {
+    "trigger": "\\infty",
+    "label": "\\infty",
+    "category": "calculus",
+    "detail": "Infinity: ∞"
+  },
+  {
+    "trigger": "\\int",
+    "label": "\\int_{a}^{b}",
+    "category": "calculus",
+    "detail": "Integral"
+  },
+  {
+    "trigger": "\\iota",
+    "label": "\\iota",
+    "category": "greek",
+    "detail": "Greek: ι"
+  },
+  {
+    "trigger": "\\kappa",
+    "label": "\\kappa",
+    "category": "greek",
+    "detail": "Greek: κ"
+  },
+  {
+    "trigger": "\\lambda",
+    "label": "\\lambda",
+    "category": "greek",
+    "detail": "Greek: λ"
+  },
+  {
+    "trigger": "\\Lambda",
+    "label": "\\Lambda",
+    "category": "greek",
+    "detail": "Greek: Λ"
+  },
+  {
+    "trigger": "\\land",
+    "label": "\\land",
+    "category": "logic",
+    "detail": "And: ∧"
+  },
+  {
+    "trigger": "\\ldots",
+    "label": "\\ldots",
+    "category": "misc",
+    "detail": "Low dots: …"
+  },
+  {
+    "trigger": "\\left(",
+    "label": "\\left(",
+    "category": "structure",
+    "detail": "Auto-sized ( "
+  },
+  {
+    "trigger": "\\leftarrow",
+    "label": "\\leftarrow",
+    "category": "arrows",
+    "detail": "Left arrow: ←"
+  },
+  {
+    "trigger": "\\leftrightarrow",
+    "label": "\\leftrightarrow",
+    "category": "arrows",
+    "detail": "Left-right arrow: ↔"
+  },
+  {
+    "trigger": "\\leq",
+    "label": "\\leq",
+    "category": "arithmetic",
+    "detail": "Less or equal: ≤"
+  },
+  {
+    "trigger": "\\lim",
+    "label": "\\lim_{x \\to \\infty}",
+    "category": "calculus",
+    "detail": "Limit"
+  },
+  {
+    "trigger": "\\lor",
+    "label": "\\lor",
+    "category": "logic",
+    "detail": "Or: ∨"
+  },
+  {
+    "trigger": "\\mapsto",
+    "label": "\\mapsto",
+    "category": "arrows",
+    "detail": "Maps to: ↦"
+  },
+  {
+    "trigger": "\\mathbb{N}",
+    "label": "\\mathbb{N}",
+    "category": "sets",
+    "detail": "Natural numbers: ℕ"
+  },
+  {
+    "trigger": "\\mathbb{R}",
+    "label": "\\mathbb{R}",
+    "category": "sets",
+    "detail": "Real numbers: ℝ"
+  },
+  {
+    "trigger": "\\mathbb{Z}",
+    "label": "\\mathbb{Z}",
+    "category": "sets",
+    "detail": "Integers: ℤ"
+  },
+  {
+    "trigger": "\\mathbf",
+    "label": "\\mathbf{}",
+    "category": "structure",
+    "detail": "Bold math"
+  },
+  {
+    "trigger": "\\mathcal",
+    "label": "\\mathcal{}",
+    "category": "structure",
+    "detail": "Calligraphic"
+  },
+  {
+    "trigger": "\\mathrm",
+    "label": "\\mathrm{}",
+    "category": "structure",
+    "detail": "Roman math"
+  },
+  {
+    "trigger": "\\mp",
+    "label": "\\mp",
+    "category": "arithmetic",
+    "detail": "Minus-plus: ∓"
+  },
+  {
+    "trigger": "\\mu",
+    "label": "\\mu",
+    "category": "greek",
+    "detail": "Greek: μ"
+  },
+  {
+    "trigger": "\\nabla",
+    "label": "\\nabla",
+    "category": "calculus",
+    "detail": "Nabla: ∇"
+  },
+  {
+    "trigger": "\\neg",
+    "label": "\\neg",
+    "category": "logic",
+    "detail": "Negation: ¬"
+  },
+  {
+    "trigger": "\\neq",
+    "label": "\\neq",
+    "category": "arithmetic",
+    "detail": "Not equal: ≠"
+  },
+  {
+    "trigger": "\\notin",
+    "label": "\\notin",
+    "category": "sets",
+    "detail": "Not element of: ∉"
+  },
+  {
+    "trigger": "\\nu",
+    "label": "\\nu",
+    "category": "greek",
+    "detail": "Greek: ν"
+  },
+  {
+    "trigger": "\\oint",
+    "label": "\\oint_{C}",
+    "category": "calculus",
+    "detail": "Contour integral"
+  },
+  {
+    "trigger": "\\omega",
+    "label": "\\omega",
+    "category": "greek",
+    "detail": "Greek: ω"
+  },
+  {
+    "trigger": "\\Omega",
+    "label": "\\Omega",
+    "category": "greek",
+    "detail": "Greek: Ω"
+  },
+  {
+    "trigger": "\\overline",
+    "label": "\\overline{}",
+    "category": "structure",
+    "detail": "Overline"
+  },
+  {
+    "trigger": "\\parallel",
+    "label": "\\parallel",
+    "category": "misc",
+    "detail": "Parallel: ∥"
+  },
+  {
+    "trigger": "\\partial",
+    "label": "\\partial",
+    "category": "calculus",
+    "detail": "Partial: ∂"
+  },
+  {
+    "trigger": "\\perp",
+    "label": "\\perp",
+    "category": "misc",
+    "detail": "Perpendicular: ⟂"
+  },
+  {
+    "trigger": "\\phi",
+    "label": "\\phi",
+    "category": "greek",
+    "detail": "Greek: ϕ"
+  },
+  {
+    "trigger": "\\Phi",
+    "label": "\\Phi",
+    "category": "greek",
+    "detail": "Greek: Φ"
+  },
+  {
+    "trigger": "\\pi",
+    "label": "\\pi",
+    "category": "greek",
+    "detail": "Greek: π"
+  },
+  {
+    "trigger": "\\Pi",
+    "label": "\\Pi",
+    "category": "greek",
+    "detail": "Greek: Π"
+  },
+  {
+    "trigger": "\\pm",
+    "label": "\\pm",
+    "category": "arithmetic",
+    "detail": "Plus-minus: ±"
+  },
+  {
+    "trigger": "\\prime",
+    "label": "\\prime",
+    "category": "misc",
+    "detail": "Prime: ′"
+  },
+  {
+    "trigger": "\\prod",
+    "label": "\\prod_{i=1}^{n}",
+    "category": "calculus",
+    "detail": "Product"
+  },
+  {
+    "trigger": "\\propto",
+    "label": "\\propto",
+    "category": "arithmetic",
+    "detail": "Proportional: ∝"
+  },
+  {
+    "trigger": "\\psi",
+    "label": "\\psi",
+    "category": "greek",
+    "detail": "Greek: ψ"
+  },
+  {
+    "trigger": "\\Psi",
+    "label": "\\Psi",
+    "category": "greek",
+    "detail": "Greek: Ψ"
+  },
+  {
+    "trigger": "\\rho",
+    "label": "\\rho",
+    "category": "greek",
+    "detail": "Greek: ρ"
+  },
+  {
+    "trigger": "\\rightarrow",
+    "label": "\\rightarrow",
+    "category": "arrows",
+    "detail": "Right arrow: →"
+  },
+  {
+    "trigger": "\\Rightarrow",
+    "label": "\\Rightarrow",
+    "category": "arrows",
+    "detail": "Double right arrow: ⇒"
+  },
+  {
+    "trigger": "\\setminus",
+    "label": "\\setminus",
+    "category": "sets",
+    "detail": "Set difference: ∖"
+  },
+  {
+    "trigger": "\\sigma",
+    "label": "\\sigma",
+    "category": "greek",
+    "detail": "Greek: σ"
+  },
+  {
+    "trigger": "\\Sigma",
+    "label": "\\Sigma",
+    "category": "greek",
+    "detail": "Greek: Σ"
+  },
+  {
+    "trigger": "\\sim",
+    "label": "\\sim",
+    "category": "arithmetic",
+    "detail": "Similar: ∼"
+  },
+  {
+    "trigger": "\\sqrt",
+    "label": "\\sqrt{}",
+    "category": "structure",
+    "detail": "Square root"
+  },
+  {
+    "trigger": "\\subset",
+    "label": "\\subset",
+    "category": "sets",
+    "detail": "Subset: ⊂"
+  },
+  {
+    "trigger": "\\subseteq",
+    "label": "\\subseteq",
+    "category": "sets",
+    "detail": "Subset or equal: ⊆"
+  },
+  {
+    "trigger": "\\sum",
+    "label": "\\sum_{i=1}^{n}",
+    "category": "calculus",
+    "detail": "Summation"
+  },
+  {
+    "trigger": "\\supset",
+    "label": "\\supset",
+    "category": "sets",
+    "detail": "Superset: ⊃"
+  },
+  {
+    "trigger": "\\tau",
+    "label": "\\tau",
+    "category": "greek",
+    "detail": "Greek: τ"
+  },
+  {
+    "trigger": "\\text",
+    "label": "\\text{}",
+    "category": "structure",
+    "detail": "Text inside math"
+  },
+  {
+    "trigger": "\\theta",
+    "label": "\\theta",
+    "category": "greek",
+    "detail": "Greek: θ"
+  },
+  {
+    "trigger": "\\Theta",
+    "label": "\\Theta",
+    "category": "greek",
+    "detail": "Greek: Θ"
+  },
+  {
+    "trigger": "\\tilde",
+    "label": "\\tilde{}",
+    "category": "structure",
+    "detail": "Tilde accent"
+  },
+  {
+    "trigger": "\\times",
+    "label": "\\times",
+    "category": "arithmetic",
+    "detail": "Multiplication: ×"
+  },
+  {
+    "trigger": "\\to",
+    "label": "\\to",
+    "category": "arrows",
+    "detail": "Right arrow: →"
+  },
+  {
+    "trigger": "\\underline",
+    "label": "\\underline{}",
+    "category": "structure",
+    "detail": "Underline"
+  },
+  {
+    "trigger": "\\upsilon",
+    "label": "\\upsilon",
+    "category": "greek",
+    "detail": "Greek: υ"
+  },
+  {
+    "trigger": "\\varepsilon",
+    "label": "\\varepsilon",
+    "category": "greek",
+    "detail": "Greek: ε"
+  },
+  {
+    "trigger": "\\varphi",
+    "label": "\\varphi",
+    "category": "greek",
+    "detail": "Greek: φ"
+  },
+  {
+    "trigger": "\\vartheta",
+    "label": "\\vartheta",
+    "category": "greek",
+    "detail": "Greek: ϑ"
+  },
+  {
+    "trigger": "\\vec",
+    "label": "\\vec{}",
+    "category": "structure",
+    "detail": "Vector accent"
+  },
+  {
+    "trigger": "\\xi",
+    "label": "\\xi",
+    "category": "greek",
+    "detail": "Greek: ξ"
+  },
+  {
+    "trigger": "\\Xi",
+    "label": "\\Xi",
+    "category": "greek",
+    "detail": "Greek: Ξ"
+  },
+  {
+    "trigger": "\\zeta",
+    "label": "\\zeta",
+    "category": "greek",
+    "detail": "Greek: ζ"
+  }
+]

@@ -19,6 +19,7 @@
         "@thexjs/env": "^1.1.0",
         "@thexjs/hooks": "^0.2.0",
         "@types/katex": "^0.16.8",
+        "@types/node": "^26.2.0",
         "asciimath-to-latex": "^0.5.1",
         "codemirror": "^6.0.2",
         "dexie": "^4.4.5",
@@ -26,6 +27,7 @@
         "drizzle-orm": "^0.45.2",
         "katex": "^0.18.4",
         "marked": "^18.0.10",
+        "minisearch": "^7.2.0",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
         "typst-wasm": "^1.0.0",
@@ -406,6 +408,8 @@
     "marked": ["marked@18.0.10", "", { "bin": { "marked": "bin/marked.js" } }, "sha512-FJeH4bRpYoXiggcgriCGItKCSv3xkngJc4QCZ/rkQCogU3VYaLxYJoZl8Nw/b4+x7iij/pd+09mZ6A1dXzpL0A=="],
 
     "micromatch": ["micromatch@4.0.8", "", { "dependencies": { "braces": "^3.0.3", "picomatch": "^2.3.1" } }, "sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA=="],
+
+    "minisearch": ["minisearch@7.2.0", "", {}, "sha512-dqT2XBYUOZOiC5t2HRnwADjhNS2cecp9u+TJRiJ1Qp/f5qjkeT5APcGPjHw+bz89Ms8Jp+cG4AlE+QZ/QnDglg=="],
 
     "mri": ["mri@1.2.0", "", {}, "sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA=="],
 

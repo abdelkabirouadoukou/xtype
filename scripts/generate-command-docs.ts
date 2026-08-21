@@ -39,5 +39,12 @@ for (const [category, name] of Object.entries(COMMAND_CATEGORIES)) {
   md += "\n";
 }
 
+const json = LATEX_COMMANDS.map((c) => ({
+  trigger: c.trigger,
+  label: c.label,
+  category: c.category,
+  detail: c.detail,
+}));
+await Bun.write("src/generated/commands.json", JSON.stringify(json, null, 2));
 await Bun.write("content-docs/writing/commands.md", md);
 console.log(`generated content-docs/writing/commands.md (${LATEX_COMMANDS.length} commands)`);
