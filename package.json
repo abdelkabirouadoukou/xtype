@@ -19,6 +19,7 @@
     "@lezer/highlight": "^1.2.3",
     "@thexjs/adapter-vercel": "^1.0.9",
     "@thexjs/core": "^1.6.1",
+    "@thexjs/hooks": "^0.2.0",
     "@types/katex": "^0.16.8",
     "asciimath-to-latex": "^0.5.1",
     "codemirror": "^6.0.2",
@@ -28,6 +29,7 @@
     "marked": "^18.0.10",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "typst-wasm": "^1.0.0",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
@@ -36,6 +38,7 @@
     "@types/bun": "^1.4.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
+    "@typst-wasm/fonts": "^1.0.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.8.0"
   }

@@ -3,6 +3,7 @@ import FileTree from "./FileTree";
 import CodePane from "./CodePane";
 import PreviewPane from "./PreviewPane";
 import CompileStatusBar from "./CompileStatusBar";
+import { useOnlineStatus, useEventListener } from "@thexjs/hooks";
 import { useProject } from "@/lib/storage/use-project";
 import { useProjectStore } from "@/lib/state/project-store";
 import { flushAllSaves } from "@/lib/editor/debounce-pipeline";
@@ -15,10 +16,9 @@ export default function EditorIsland() {
     if (parts[0] === "project" && parts[1]) {
       setProjectId(decodeURIComponent(parts[1]));
     }
-    const onLeave = () => void flushAllSaves();
-    window.addEventListener("pagehide", onLeave);
-    return () => window.removeEventListener("pagehide", onLeave);
   }, []);
+
+  useEventListener("pagehide", () => void flushAllSaves());
 
   if (!projectId) {
     return (
@@ -37,6 +37,7 @@ function Editor({ projectId }: { projectId: string }) {
   const content = useProjectStore(
     (s) => (activeId ? s.chapters[activeId]?.content : undefined) ?? "",
   );
+  const online = useOnlineStatus();
 
   return (
     <div className="flex h-full">
@@ -47,6 +48,7 @@ function Editor({ projectId }: { projectId: string }) {
             <header className="flex items-center justify-between border-b border-border px-4 py-2 text-sm text-muted-foreground">
               <span>{projectId}</span>
               <span className="flex items-center gap-4">
+                {!online && <span className="text-yellow-500">offline — edits stay local</span>}
                 <CompileStatusBar />
                 <SaveBadge />
               </span>
