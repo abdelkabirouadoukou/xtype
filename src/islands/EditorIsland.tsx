@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { EditorView } from "codemirror";
+import FileTree from "./FileTree";
+import { useProject } from "@/lib/storage/use-project";
+import { useProjectStore } from "@/lib/state/project-store";
 
 export default function EditorIsland() {
   const [projectId, setProjectId] = useState<string | null>(null);
-  const [count, setCount] = useState(0);
-  const cmRef = useRef<HTMLDivElement>(null);
-  const [cmReady, setCmReady] = useState(false);
 
   useEffect(() => {
     const parts = window.location.pathname.split("/").filter(Boolean);
@@ -14,38 +14,53 @@ export default function EditorIsland() {
     }
   }, []);
 
+  if (!projectId) {
+    return (
+      <div className="flex h-full items-center justify-center text-muted-foreground">
+        Loading…
+      </div>
+    );
+  }
+
+  return <Editor projectId={projectId} />;
+}
+
+function Editor({ projectId }: { projectId: string }) {
+  useProject(projectId);
+  const activeId = useProjectStore((s) => s.activeChapterId);
+  const cmRef = useRef<HTMLDivElement>(null);
+  const [cmReady, setCmReady] = useState(false);
+
   useEffect(() => {
     if (!cmRef.current) return;
     const view = new EditorView({
       parent: cmRef.current,
-      doc: "Hello $x^2$ — CodeMirror is alive inside the island.",
+      doc: "Hello $x^2$ — editing loop lands in #5.",
     });
     setCmReady(true);
     return () => view.destroy();
   }, []);
 
   return (
-    <div className="flex h-full flex-col">
-      <header className="border-b border-border px-4 py-2 text-sm text-muted-foreground">
-        project: <span className="text-foreground">{projectId ?? "?"}</span>
-        <span className="ml-4">
-          CodeMirror smoke test:{" "}
+    <div className="flex h-full">
+      <FileTree projectId={projectId} />
+      <main className="flex flex-1 flex-col">
+        <header className="border-b border-border px-4 py-2 text-sm text-muted-foreground">
+          project: <span className="text-foreground">{projectId}</span>
+          {" · "}
+          active: <span className="text-foreground">{activeId ?? "none"}</span>
+          {" · "}
           {cmReady ? (
-            <span className="text-green-500">bundled + mounted OK</span>
+            <span className="text-green-500">editor ready</span>
           ) : (
             "mounting…"
           )}
-        </span>
-      </header>
-      <div ref={cmRef} className="min-h-24 border-b border-border bg-card p-2" />
-      <div className="flex flex-1 items-center justify-center gap-4">
-        <button
-          onClick={() => setCount((c) => c + 1)}
-          className="rounded-lg bg-accent px-4 py-2 font-medium text-white"
-        >
-          island interactivity check: clicked {count}x
-        </button>
-      </div>
+        </header>
+        <div ref={cmRef} className="flex-1 overflow-auto bg-card p-2" />
+      </main>
+      <section className="flex w-1/3 items-center justify-center border-l border-border text-sm text-muted-foreground">
+        preview pane (#6)
+      </section>
     </div>
   );
 }

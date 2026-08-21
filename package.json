@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "x dev",
     "build": "x build",
-    "start": "x start"
+    "start": "x start",
+    "vercel-build": "x build --adapter vercel"
   },
   "dependencies": {
     "@codemirror/language": "^6.12.4",
+    "@thexjs/adapter-vercel": "^1.0.9",
     "@thexjs/core": "^1.6.1",
     "codemirror": "^6.0.2",
     "dexie": "^4.4.5",
