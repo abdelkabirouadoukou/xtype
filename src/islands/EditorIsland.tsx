@@ -7,6 +7,7 @@ import OutlinePanel from "./outline-panel";
 import SymbolPalette from "./symbol-palette";
 import { TEMPLATES, applyTemplate } from "./template-picker";
 import ProjectSearch from "./project-search";
+import CollabPane from "./collab-pane";
 import CompileStatusBar from "./CompileStatusBar";
 import ProjectLoadingScreen from "./ProjectLoadingScreen";
 import { useOnlineStatus, useEventListener } from "@thexjs/hooks";
@@ -63,6 +64,7 @@ function Editor({ projectId }: { projectId: string }) {
   const [vimOn, setVimOn] = useState(false);
   const [splitOn, setSplitOn] = useState(false);
   const [secondaryId, setSecondaryId] = useState<string | null>(null);
+  const [collabOn, setCollabOn] = useState(false);
 
   useEffect(() => {
     import("@/lib/editor/editor-prefs").then(({ isVimEnabled, isSplitView }) => {
@@ -147,13 +149,28 @@ function Editor({ projectId }: { projectId: string }) {
                 >
                   gh↓
                 </button>
+                <button
+                  onClick={() => {
+                    const next = !collabOn;
+                    setCollabOn(next);
+                    try { localStorage.setItem("xtype:collab", next ? "1" : "0"); } catch {}
+                  }}
+                  className={collabOn ? "font-medium text-accent" : "hover:text-foreground"}
+                  title="Realtime collaboration"
+                >
+                  collab
+                </button>
                 <CompileStatusBar />
                 <SaveBadge />
               </span>
             </header>
             <div className="flex min-h-0 flex-1">
               <div className="min-w-0 flex-1">
-                <CodePane key={`${activeId}-${vimOn}`} chapterId={activeId} initialContent={content} />
+                {collabOn ? (
+                  <CollabPane chapterId={activeId} projectId={projectId} initialContent={content} />
+                ) : (
+                  <CodePane key={`${activeId}-${vimOn}`} chapterId={activeId} initialContent={content} />
+                )}
               </div>
               {splitOn && (
                 <div className="flex min-w-0 flex-1 flex-col border-l border-border">
