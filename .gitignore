@@ -1,0 +1,8 @@
+node_modules/
+.x/
+dist/
+.env
+.env.*
+*.local
+.DS_Store
+public/styles.css
