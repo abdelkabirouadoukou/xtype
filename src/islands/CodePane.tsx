@@ -3,6 +3,7 @@ import { EditorState } from "@codemirror/state";
 import { EditorView, keymap } from "@codemirror/view";
 import { basicSetup } from "codemirror";
 import { indentWithTab } from "@codemirror/commands";
+import { searchKeymap, highlightSelectionMatches } from "@codemirror/search";
 import { xtypeLanguage } from "@/lib/editor/math-syntax";
 import { mathAutocomplete } from "@/lib/editor/completions/completion-source";
 import { onEditorChange, flushSave } from "@/lib/editor/debounce-pipeline";
@@ -27,7 +28,8 @@ export default function CodePane({ chapterId, initialContent }: Props) {
           basicSetup,
           xtypeLanguage,
           mathAutocomplete,
-          keymap.of([indentWithTab]),
+          highlightSelectionMatches(),
+          keymap.of([...searchKeymap, indentWithTab]),
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
               onEditorChange(
@@ -40,8 +42,19 @@ export default function CodePane({ chapterId, initialContent }: Props) {
       }),
     });
     viewRef.current = view;
+    const onGoto = (e: Event) => {
+      const line = (e as CustomEvent<number>).detail;
+      const l = view.state.doc.line(Math.min(line + 1, view.state.doc.lines));
+      view.dispatch({
+        selection: { anchor: l.from },
+        scrollIntoView: true,
+      });
+      view.focus();
+    };
+    window.addEventListener("xtype:goto-line", onGoto);
     return () => {
       void flushSave(chapterRef.current);
+      window.removeEventListener("xtype:goto-line", onGoto);
       view.destroy();
       viewRef.current = null;
     };
