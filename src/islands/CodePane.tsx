@@ -6,6 +6,7 @@ import { indentWithTab } from "@codemirror/commands";
 import { searchKeymap, highlightSelectionMatches } from "@codemirror/search";
 import { vim } from "@replit/codemirror-vim";
 import { isVimEnabled } from "@/lib/editor/editor-prefs";
+import { uploadImage, insertAtCursor } from "@/lib/editor/image-upload";
 import { xtypeLanguage } from "@/lib/editor/math-syntax";
 import { mathAutocomplete } from "@/lib/editor/completions/completion-source";
 import { onEditorChange, flushSave } from "@/lib/editor/debounce-pipeline";
@@ -19,6 +20,29 @@ export default function CodePane({ chapterId, initialContent }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const chapterRef = useRef(chapterId);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const onDrop = (e: DragEvent) => {
+      const file = e.dataTransfer?.files?.[0];
+      if (!file || !file.type.startsWith("image/")) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const projectId = window.location.pathname.split("/")[2] ?? "";
+      void uploadImage(projectId, file).then((url) => {
+        if (!url) {
+          alert(file.type.startsWith("image/") ? "Image uploads need Cloudinary keys + sign-in" : "Not an image");
+          return;
+        }
+        if (viewRef.current) {
+          insertAtCursor(viewRef.current, `![${file.name}](${url})\n`);
+        }
+      });
+    };
+    el.addEventListener("drop", onDrop);
+    return () => el.removeEventListener("drop", onDrop);
+  }, []);
 
   useEffect(() => {
     if (!containerRef.current) return;

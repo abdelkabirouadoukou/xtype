@@ -12,9 +12,18 @@ export interface NodeRow {
   updatedAt: number;
 }
 
+export interface AssetRow {
+  id: string;
+  projectId: string;
+  name: string;
+  url: string;
+  createdAt: number;
+}
+
 class XTypeDB extends Dexie {
   projects!: Table<ProjectRow, string>;
   nodes!: Table<NodeRow, string>;
+  assets!: Table<AssetRow, string>;
 
   constructor() {
     super("xtype-db");
@@ -43,6 +52,11 @@ class XTypeDB extends Dexie {
         );
         await tx.table("chapters").toCollection().delete();
       });
+    this.version(3).stores({
+      projects: "id, name, createdAt",
+      nodes: "id, projectId, parentId, type, order",
+      assets: "id, projectId",
+    });
   }
 }
 
