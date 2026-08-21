@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Island } from "@thexjs/core";
 import AuthBar from "@/islands/auth-bar";
-import { clerkPublishableKey, clerkUiEnabled } from "@/lib/public-env";
+import { clerkPublishableKey, liveblocksPublicKey, clerkUiEnabled } from "@/lib/public-env";
 
 export const islands = { "auth-bar": AuthBar };
 
@@ -27,6 +27,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           data-clerk-publishable-key={clerkPublishableKey}
         />
       )}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `window.process=window.process||{env:{}};Object.assign(window.process.env,${JSON.stringify(
+            { THEXJS_PUBLIC_CLERK_PUBLISHABLE_KEY: clerkPublishableKey ?? "", THEXJS_PUBLIC_LIVEBLOCKS_KEY: liveblocksPublicKey ?? "" },
+          )});`,
+        }}
+      />
       <nav className="flex items-center gap-6 border-b border-border px-6 py-3">
         <a className="text-lg font-semibold tracking-tight">
           x<span className="font-[family-name:var(--font-serif)] italic text-accent">type</span>

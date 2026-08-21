@@ -95,6 +95,7 @@ export function isDescendant(
   nodeId: string,
   all: NodeRow[],
 ): boolean {
+  if (nodeId === candidateAncestorId) return true;
   let current = all.find((n) => n.id === nodeId);
   while (current?.parentId) {
     if (current.parentId === candidateAncestorId) return true;
@@ -106,6 +107,7 @@ export function isDescendant(
 export async function moveNode(id: string, parentId: string | null, all: NodeRow[]) {
   const node = await db.nodes.get(id);
   if (!node) return;
+  if (parentId === id) return;
   if (node.parentId === parentId) return;
   if (node.type === "folder" && parentId && isDescendant(id, parentId, all)) return;
   const siblings = all.filter((n) => n.parentId === parentId);

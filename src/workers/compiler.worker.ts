@@ -50,7 +50,7 @@ function formatDiagnostics(diagnostics: Array<{ message: string }>): string {
 }
 
 self.onmessage = async (e: MessageEvent) => {
-  const { type, source, gen } = e.data as {
+  const { type, source, files, gen } = e.data as {
     type: string;
     source: string;
     files: Record<string, string>;
@@ -63,6 +63,9 @@ self.onmessage = async (e: MessageEvent) => {
     const compiler = await getCompiler();
     if (gen !== latestGen) return;
     await compiler.addSource("main.typ", source);
+    for (const [name, content] of Object.entries(files ?? {})) {
+      await compiler.addSource(name.endsWith(".typ") ? name : `${name}.typ`, content);
+    }
     const result = await compiler.compile({ format: "pdf" });
     if (gen !== latestGen) return;
 
