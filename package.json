@@ -4,10 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "bun scripts/build-workers.ts",
     "dev": "x dev",
+    "prebuild": "bun scripts/build-workers.ts",
     "build": "x build",
-    "start": "x start",
-    "vercel-build": "x build --adapter vercel"
+    "start": "x start"
   },
   "dependencies": {
     "@codemirror/commands": "^6.11.0",

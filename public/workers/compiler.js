@@ -1,0 +1,1 @@
+var a=0;self.onmessage=async(t)=>{let{type:e,source:n,gen:s}=t.data;if(e!=="compile")return;a=s;let r=await o(n);if(s!==a)return;self.postMessage({type:"result",gen:s,pdf:r.buffer},[r.buffer])};async function o(t){let e=Date.now();while(Date.now()-e<40);return new Uint8Array([37,80,68,70,45])}
