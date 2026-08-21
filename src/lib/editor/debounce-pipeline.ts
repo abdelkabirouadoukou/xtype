@@ -1,6 +1,7 @@
 import { useProjectStore } from "@/lib/state/project-store";
 import { saveChapterContent } from "@/lib/storage/use-project";
 import { requestCompile } from "@/lib/compiler/typst-client";
+import { queueCloudSyncForNode } from "@/lib/sync/cloud-sync";
 
 const COMPILE_DEBOUNCE = 250;
 const SAVE_DEBOUNCE = 2000;
@@ -36,6 +37,7 @@ export async function flushSave(chapterId: string) {
   if (!chapter?.dirty) return;
   await saveChapterContent(chapterId, chapter.content);
   markSaved(chapterId);
+  void queueCloudSyncForNode(chapterId);
 }
 
 export function flushAllSaves() {

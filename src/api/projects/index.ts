@@ -3,6 +3,7 @@ import { getDb } from "../../lib/db";
 import { projects } from "../../lib/db/schema";
 import { hasDb } from "../../lib/env";
 import { getAuthUserId, unauthorized } from "../../lib/server/auth";
+import { getPlan, withinProjectLimit } from "../../lib/server/entitlements";
 import { createRateLimiter, rateLimitMiddleware } from "@thexjs/core";
 
 const limiter = createRateLimiter();
@@ -41,6 +42,14 @@ export async function POST(req: Request) {
       return Response.json({ error: "forbidden" }, { status: 403 });
     }
     return Response.json({ project: existing[0] });
+  }
+  const existingCount = await db
+    .select({ id: projects.id })
+    .from(projects)
+    .where(eq(projects.ownerId, userId));
+  const plan = await getPlan(userId);
+  if (!withinProjectLimit(plan, existingCount.length)) {
+    return Response.json({ error: "project-limit-reached", plan }, { status: 402 });
   }
   const [row] = await db
     .insert(projects)
