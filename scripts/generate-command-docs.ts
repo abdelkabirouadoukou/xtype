@@ -39,5 +39,5 @@ for (const [category, name] of Object.entries(COMMAND_CATEGORIES)) {
   md += "\n";
 }
 
-await Bun.write("content/docs/writing/commands.md", md);
-console.log(`generated content/docs/writing/commands.md (${LATEX_COMMANDS.length} commands)`);
+await Bun.write("content-docs/writing/commands.md", md);
+console.log(`generated content-docs/writing/commands.md (${LATEX_COMMANDS.length} commands)`);
