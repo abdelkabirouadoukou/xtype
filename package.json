@@ -8,7 +8,8 @@
     "dev": "x dev",
     "prebuild": "bun scripts/build-workers.ts",
     "build": "x build",
-    "start": "x start"
+    "start": "x start",
+    "vercel-build": "bun scripts/vercel-build.ts"
   },
   "dependencies": {
     "@codemirror/commands": "^6.11.0",
