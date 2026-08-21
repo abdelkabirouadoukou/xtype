@@ -1,5 +1,9 @@
 import type { LoaderArgs, RouteProps } from "@thexjs/core";
+import { Island } from "@thexjs/core";
+import CommandReference from "@/islands/command-reference";
 import { DOCS } from "@/generated/docs-data";
+
+export const islands = { "command-reference": CommandReference };
 
 interface DocPageProps extends RouteProps {
   loaderData?: { doc?: (typeof DOCS)[number] | null };
@@ -24,8 +28,9 @@ export default function DocsPage({ loaderData }: DocPageProps) {
     );
   }
   return (
-    <article className="prose-katex mx-auto max-w-3xl px-6 py-12">
+    <article className="prose-katex min-w-0">
       <h1>{doc.title}</h1>
+      {doc.slug === "writing/commands" && <Island name="command-reference" client="load" />}
       <div dangerouslySetInnerHTML={{ __html: doc.html }} />
       <a
         href={`https://github.com/abdelkabirouadoukou/xtype/edit/main/content-docs/${doc.slug}.md`}
