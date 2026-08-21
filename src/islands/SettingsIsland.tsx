@@ -1,5 +1,6 @@
 import { useLocalStorage } from "@thexjs/hooks";
 import { db } from "@/lib/storage/db";
+import { getPat, setPat } from "@/lib/github-sync";
 
 export default function SettingsIsland() {
   const [defaultView, setDefaultView] = useLocalStorage(
@@ -45,6 +46,25 @@ export default function SettingsIsland() {
       >
         Clear all local data
       </button>
+    </div>
+  );
+}
+
+function GitHubSyncCard() {
+  return (
+    <div className="rounded-xl border border-border bg-card p-4 text-sm">
+      <p className="font-medium">GitHub sync</p>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Personal access token (repo scope), stored locally.
+      </p>
+      <input
+        type="password"
+        defaultValue={getPat()}
+        onBlur={(e) => setPat(e.target.value.trim())}
+        placeholder="ghp_…"
+        className="mt-2 w-full rounded border border-border bg-background px-2 py-1 outline-none focus:border-accent"
+      />
+  <GitHubSyncCard />
     </div>
   );
 }
